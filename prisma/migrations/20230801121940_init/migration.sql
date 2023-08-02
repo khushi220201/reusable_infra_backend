@@ -46,7 +46,7 @@ CREATE TABLE "Token" (
 -- CreateTable
 CREATE TABLE "Company" (
     "id" TEXT NOT NULL,
-    "tenantName" TEXT,
+    "companyName" TEXT,
     "tenantID" TEXT,
     "accessToken" TEXT,
     "refreshToken" TEXT,

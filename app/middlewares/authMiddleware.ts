@@ -7,7 +7,7 @@ import {
 } from '../helpers/tokenHelper';
 // import { RequestExtended } from '../interfaces/global';
 import { CustomError } from '../models/customError';
-import tokenRepository from '../repositories/tokenRepository';
+// import tokenRepository from '../repositories/tokenRepository';
 
 export const refreshAccessToken = async (
 	accessToken: string,
@@ -34,13 +34,13 @@ export const refreshAccessToken = async (
 			email: verified?.email,
 		});
 
-		await tokenRepository?.updateTokens(
-			verified?.id,
-			accessToken,
-			refreshToken,
-			newAccessToken,
-			newRefreshToken
-		);
+		// await tokenRepository?.updateTokens(
+		// 	verified?.id,
+		// 	accessToken,
+		// 	refreshToken,
+		// 	newAccessToken,
+		// 	newRefreshToken
+		// );
 
 		return { newAccessToken, newRefreshToken };
 	} catch (err: any) {

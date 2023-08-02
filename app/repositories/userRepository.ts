@@ -2,6 +2,20 @@ import { prisma } from '../client/prisma';
 import { UserInfo } from '../interfaces';
 
 class UserRepository {
+//Test Register
+async register(data:any
+) {
+	console.log("objectggggg")
+	try {
+		const user = await prisma.user.create({
+			data: data,
+		});
+		return user;
+	} catch (err) {
+		throw err;
+	}
+}
+
 	// Get all users
 	async getAll(
 		company: string,
@@ -62,7 +76,7 @@ class UserRepository {
 			// 				company: {
 			// 					select: {
 			// 						id: true,
-			// 						tenantName: true,
+			// 						companyName: true,
 			// 					},
 			// 				},
 			// 			},
@@ -187,26 +201,26 @@ class UserRepository {
 	}
 
 	// Register a user
-	async register(
-		firstName: string,
-		lastName: string,
-		email: string,
-		customerId: string
-	) {
-		try {
-			const user = await prisma.user.create({
-				data: {
-					firstName: firstName,
-					lastName: lastName,
-					email: email,
-					customerId: customerId,
-				},
-			});
-			return user;
-		} catch (err) {
-			throw err;
-		}
-	}
+	// async register(
+	// 	firstName: string,
+	// 	lastName: string,
+	// 	email: string,
+	// 	customerId: string
+	// ) {
+	// 	try {
+	// 		const user = await prisma.user.create({
+	// 			data: {
+	// 				firstName: firstName,
+	// 				lastName: lastName,
+	// 				email: email,
+	// 				// customerId: customerId,
+	// 			},
+	// 		});
+	// 		return user;
+	// 	} catch (err) {
+	// 		throw err;
+	// 	}
+	// }
 
 	//  Create a new user
 	async create(userData: UserInfo) {

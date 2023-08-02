@@ -15,7 +15,7 @@ import {
 	userRepository,
 } from '../repositories';
 import companyRoleRepository from '../repositories/companyRoleRepository';
-import inviteRepository from '../repositories/inviteRepository';
+// import inviteRepository from '../repositories/inviteRepository';
 
 class UserServices {
 	// Get all users
@@ -239,7 +239,7 @@ class UserServices {
 
 				const emailContent = getInvitationEmailUserExistTemplate({
 					email,
-					companyName: companyName?.tenantName,
+					companyName: companyName?.companyName,
 					url: config?.reactAppBaseUrl,
 				});
 
@@ -257,7 +257,7 @@ class UserServices {
 				const adminEmailContent = getInvitationAdminMailTemplate({
 					invitedByEmail,
 					email,
-					companyName: companyName?.tenantName,
+					companyName: companyName?.companyName,
 					url: config?.reactAppBaseUrl,
 				});
 
@@ -360,13 +360,13 @@ class UserServices {
 				}
 
 				// Create new invite
-				await inviteRepository.create(
-					invitedBy,
-					createdUser?.id,
-					role,
-					company,
-					companyRole?.id
-				);
+				// await inviteRepository.create(
+				// 	invitedBy,
+				// 	createdUser?.id,
+				// 	role,
+				// 	company,
+				// 	companyRole?.id
+				// );
 
 				const companyName = await companyRepository.getDetails(company);
 
@@ -375,7 +375,7 @@ class UserServices {
 
 				const emailContent = getInvitationEmailUserTemplate({
 					email,
-					companyName: companyName?.tenantName,
+					companyName: companyName?.companyName,
 					url,
 				});
 
@@ -393,7 +393,7 @@ class UserServices {
 				const adminEmailContent = getInvitationAdminMailTemplate({
 					invitedByEmail,
 					email,
-					companyName: companyName?.tenantName,
+					companyName: companyName?.companyName,
 					url: config?.reactAppBaseUrl,
 				});
 

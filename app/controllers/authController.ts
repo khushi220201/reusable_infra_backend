@@ -4,6 +4,7 @@ import { DefaultResponse } from '../helpers/defaultResponseHelper';
 import { checkValidation } from '../helpers/validationHelper';
 import { RequestExtended } from '../interfaces/global';
 import authServices from '../services/authServices';
+import { hashPassword } from '../helpers/passwordHelper';
 import {
 	companyRoleRepository,
 	roleRepository,
@@ -13,80 +14,96 @@ import {
 import config from '../../config';
 
 class AuthController {
-	// Register User
-	async register(req: Request, res: Response, next: NextFunction) {
-		try {
-			const { data } = req.body;
-
-			const customer = data?.subscription?.customer;
-
-			const firstName = customer?.first_name;
-			const lastName = customer?.last_name;
-			const email = customer?.email;
-			const customerId = customer?.customer_id;
-			let companyAdminRole;
-
-			// Check if company admin role exists
-			companyAdminRole = await roleRepository.checkAdmin('Company Admin');
-
-			if (!companyAdminRole) {
-				companyAdminRole = await roleRepository.createRole(
-					'Company Admin',
-					'All company permissions granted',
-					false,
-					true
-				);
-			}
-
-			// Check if admin role exists
-			const isAdminExist = await roleRepository.checkAdmin('admin');
-
-			if (!isAdminExist) {
-				await roleRepository.createRole(
-					'Admin',
-					'All permissions granted',
-					true,
-					false
-				);
-			}
-
-			// Create new user
-			const user = await authServices.register(
-				firstName,
-				lastName,
-				email.toLowerCase(),
-				customerId
-			);
-
-			// TEMP Until we not create the company
-			const companyData = {
-				tenantID: Math.random().toString(),
-				tenantName: 'Organization 1',
-			};
-
-			const company = await companyRepository.create(companyData);
-
-			await companyRepository?.connectCompany(user.id, company?.id);
-
-			// TEMP END Until we not create the company
-
-			// Uncomment code
-			// Create new record in companyRole
-			// await companyRoleRepository.create(user?.id, companyAdminRole?.id);
-
-			return DefaultResponse(
-				res,
-				201,
-				'User registration successful, please check your email for accessing your account'
-			);
-		} catch (err) {
-			console.log(err);
-			next(err);
-		}
+//Test Register
+async register(req: Request, res: Response, next: NextFunction) {
+	console.log("objectff")
+	try {
+		const data = req.body
+		const hashedPassword = await hashPassword(data.password);
+		data.password=hashedPassword
+		const response=await userRepository.register(data)
+		res.send(response)
+	} catch (err) {
+		console.log(err);
+		next(err);
 	}
+}
+
+	// // Register User
+	// async register(req: Request, res: Response, next: NextFunction) {
+	// 	try {
+	// 		const { data } = req.body;
+
+	// 		const customer = data?.subscription?.customer;
+
+	// 		const firstName = customer?.first_name;
+	// 		const lastName = customer?.last_name;
+	// 		const email = customer?.email;
+	// 		const customerId = customer?.customer_id;
+	// 		let companyAdminRole;
+
+	// 		// Check if company admin role exists
+	// 		companyAdminRole = await roleRepository.checkAdmin('Company Admin');
+
+	// 		if (!companyAdminRole) {
+	// 			companyAdminRole = await roleRepository.createRole(
+	// 				'Company Admin',
+	// 				'All company permissions granted',
+	// 				false,
+	// 				true
+	// 			);
+	// 		}
+
+	// 		// Check if admin role exists
+	// 		const isAdminExist = await roleRepository.checkAdmin('admin');
+
+	// 		if (!isAdminExist) {
+	// 			await roleRepository.createRole(
+	// 				'Admin',
+	// 				'All permissions granted',
+	// 				true,
+	// 				false
+	// 			);
+	// 		}
+
+	// 		// Create new user
+	// 		const user = await authServices.register(
+	// 			firstName,
+	// 			lastName,
+	// 			email.toLowerCase(),
+	// 			customerId
+	// 		);
+
+	// 		// TEMP Until we not create the company
+	// 		const companyData = {
+	// 			tenantID: Math.random().toString(),
+	// 			companyName: 'Organization 1',
+	// 		};
+
+	// 		const company = await companyRepository.create(companyData);
+
+	// 		await companyRepository?.connectCompany(user.id, company?.id);
+
+	// 		// TEMP END Until we not create the company
+
+	// 		// Uncomment code
+	// 		// Create new record in companyRole
+	// 		// await companyRoleRepository.create(user?.id, companyAdminRole?.id);
+
+	// 		return DefaultResponse(
+	// 			res,
+	// 			201,
+	// 			'User registration successful, please check your email for accessing your account'
+	// 		);
+	// 	} catch (err) {
+	// 		console.log(err);
+	// 		next(err);
+	// 	}
+	// }
 
 	// Login User
 	async login(req: RequestExtended, res: Response, next: NextFunction) {
+		console.log("object")
 		try {
 			checkValidation(req);
 			const { email, password } = req.body;
@@ -106,7 +123,7 @@ class AuthController {
 			const {
 				password: userPassword,
 				forgotPasswordToken,
-				forgotPasswordTokenExpiresAt,
+				// forgotPasswordTokenExpiresAt,
 				isVerified,
 				...finalUser
 			} = user;

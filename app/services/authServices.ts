@@ -58,59 +58,59 @@ class AuthServices {
 		}
 	}
 
-	async register(
-		firstName: string,
-		lastName: string,
-		email: string,
-		customerId: string
-	) {
-		try {
-			const user = await userRepository.register(
-				firstName,
-				lastName,
-				email,
-				customerId
-			);
+	// async register(
+	// 	firstName: string,
+	// 	lastName: string,
+	// 	email: string,
+	// 	customerId: string
+	// ) {
+	// 	try {
+	// 		const user = await userRepository.register(
+	// 			firstName,
+	// 			lastName,
+	// 			email,
+	// 			customerId
+	// 		);
 
-			// Generate forgot password token
-			const forgotPasswordToken = generateForgotPasswordToken({
-				id: user?.id,
-				email: email,
-			});
+	// 		// Generate forgot password token
+	// 		const forgotPasswordToken = generateForgotPasswordToken({
+	// 			id: user?.id,
+	// 			email: email,
+	// 		});
 
-			// Expire time for token
-			const forgotPasswordTokenExpiresAt: string = (
-				Date.now() + config.registerUrlExpireTime
-			).toString();
+	// 		// Expire time for token
+	// 		const forgotPasswordTokenExpiresAt: string = (
+	// 			Date.now() + config.registerUrlExpireTime
+	// 		).toString();
 
-			// Store token in the database
-			await userRepository.update(user?.id, {
-				forgotPasswordToken: forgotPasswordToken,
-				forgotPasswordTokenExpiresAt: forgotPasswordTokenExpiresAt,
-			});
+	// 		// Store token in the database
+	// 		await userRepository.update(user?.id, {
+	// 			forgotPasswordToken: forgotPasswordToken,
+	// 			forgotPasswordTokenExpiresAt: forgotPasswordTokenExpiresAt,
+	// 		});
 
-			// Change Password url
-			const url = `${config?.changePasswordReactUrl}?token=${forgotPasswordToken}&first=true`;
-			// const url = `${config?.reactAppBaseUrl}/change-password?token=${forgotPasswordToken}`;
+	// 		// Change Password url
+	// 		const url = `${config?.changePasswordReactUrl}?token=${forgotPasswordToken}&first=true`;
+	// 		// const url = `${config?.reactAppBaseUrl}/change-password?token=${forgotPasswordToken}`;
 
-			const fullName =
-				firstName || lastName ? firstName + ' ' + lastName : 'User';
+	// 		const fullName =
+	// 			firstName || lastName ? firstName + ' ' + lastName : 'User';
 
-			const emailContent = getRegisterEmailTemplate({ fullName, url });
+	// 		const emailContent = getRegisterEmailTemplate({ fullName, url });
 
-			const mailOptions = {
-				from: config.smtpEmail,
-				to: email,
-				subject: 'Welcome to CostAllocation Pro!',
-				html: emailContent,
-			};
+	// 		const mailOptions = {
+	// 			from: config.smtpEmail,
+	// 			to: email,
+	// 			subject: 'Welcome to CostAllocation Pro!',
+	// 			html: emailContent,
+	// 		};
 
-			await sendEmail(mailOptions);
-			return user;
-		} catch (err) {
-			throw err;
-		}
-	}
+	// 		await sendEmail(mailOptions);
+	// 		return user;
+	// 	} catch (err) {
+	// 		throw err;
+	// 	}
+	// }
 
 	async forgotPassword(email: string) {
 		try {
@@ -204,10 +204,10 @@ class AuthServices {
 			}
 
 			// If token is expired, send error message
-			if (Number(user.forgotPasswordTokenExpiresAt) < Date.now()) {
-				const err = new CustomError(401, 'Reset token has expired');
-				throw err;
-			}
+			// if (Number(user.forgotPasswordTokenExpiresAt) < Date.now()) {
+			// 	const err = new CustomError(401, 'Reset token has expired');
+			// 	throw err;
+			// }
 
 			// Everything is valid, proceed further
 			return true;
@@ -274,11 +274,11 @@ class AuthServices {
 				throw err;
 			}
 
-			// If token is expired, send error message
-			if (Number(user.forgotPasswordTokenExpiresAt) < Date.now()) {
-				const err = new CustomError(401, 'Reset token has expired');
-				throw err;
-			}
+			// // If token is expired, send error message
+			// if (Number(user.forgotPasswordTokenExpiresAt) < Date.now()) {
+			// 	const err = new CustomError(401, 'Reset token has expired');
+			// 	throw err;
+			// }
 
 			// Check if the new password is the same as the old one
 			if (user?.password) {

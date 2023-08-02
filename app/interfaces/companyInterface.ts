@@ -1,6 +1,6 @@
 export default interface CompanyInfo {
 	id?: string;
-	tenantName?: string;
+	companyName?: string;
 	tenantID?: string;
 	accessToken?: string;
 	refreshToken?: string;

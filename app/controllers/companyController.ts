@@ -54,11 +54,11 @@ class CompanyController {
 	}
 
 	async createCompany(req: RequestExtended, res: Response) {
-		const { tenantName, tenantId } = req.body;
+		const { companyName, tenantId } = req.body;
 
 		const data = {
 			tenantID: tenantId,
-			tenantName: tenantName,
+			companyName: companyName,
 		};
 
 		const company = await companyRepository.create(data);

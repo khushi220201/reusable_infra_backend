@@ -52,7 +52,7 @@ class CompanyRepository {
 							company: {
 								select: {
 									id: true,
-									tenantName: true,
+									companyName: true,
 								},
 							},
 							role: {

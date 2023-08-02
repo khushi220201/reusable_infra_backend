@@ -6,7 +6,7 @@
 	"root": "index.d.ts",
 	"scripts": {
 		"build": "tsc",
-		"start": "npx prisma generate && node dist/index.js",
+		"start": "nodemon index.ts",
 		"start:dev": "nodemon index.ts",
 		"prisma:migrate": "npx prisma migrate",
 		"test": "echo \"Error: no test specified\" && exit 1"

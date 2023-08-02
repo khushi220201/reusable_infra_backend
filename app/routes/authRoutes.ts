@@ -20,6 +20,8 @@ router.post('/logout', authController.logout);
 // Register User
 router.post('/register', authController.register);
 
+//Test Register
+// router.post('/testregister', authController.testregister);
 // Forgot password
 router.post(
 	'/forgot-password',

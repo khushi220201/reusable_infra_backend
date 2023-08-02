@@ -253,11 +253,11 @@ class RoleRepositories {
 	deleteRole = async (id: string) => {
 		try {
 			// TEMP code
-			await prisma.invitations.deleteMany({
-				where: {
-					roleId: id,
-				},
-			});
+			// await prisma.invitations.deleteMany({
+			// 	where: {
+			// 		roleId: id,
+			// 	},
+			// });
 
 			await prisma.role.deleteMany({
 				where: {

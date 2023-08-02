@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from '../../config';
-import tokenRepository from '../repositories/tokenRepository';
+// import tokenRepository from '../repositories/tokenRepository';
 
 // Generate AccessToken
 export const generateAccessToken = (payload: any) => {
@@ -48,16 +48,16 @@ export const verifyForgotPasswordToken = (forgotPasswordToken: any) => {
 };
 
 // Check Tokens in DB
-export const checkTokens = async (
-	userId: string,
-	accessToken: string,
-	refreshToken: string
-) => {
-	const getRecord = await tokenRepository.findToken(
-		userId,
-		accessToken,
-		refreshToken
-	);
+// export const checkTokens = async (
+// 	userId: string,
+// 	accessToken: string,
+// 	refreshToken: string
+// ) => {
+// 	const getRecord = await tokenRepository.findToken(
+// 		userId,
+// 		accessToken,
+// 		refreshToken
+// 	);
 
-	return getRecord;
-};
+// 	return getRecord;
+// };

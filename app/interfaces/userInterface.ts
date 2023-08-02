@@ -8,7 +8,7 @@ export default interface UserInfo {
 	isVerified?: boolean;
 	forgotPasswordToken?: string;
 	forgotPasswordTokenExpiresAt?: string;
-	status?: string;
+	status?: boolean;
 	profileImg?: string;
 	createdAt?: Date;
 	updatedAt?: Date;

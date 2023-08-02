@@ -150,14 +150,14 @@ class UserController {
 
 			const userEmailContent = getUserEmailOnDeleteTemplate({
 				userName,
-				companyName: companyDetails?.tenantName,
+				companyName: companyDetails?.companyName,
 			});
 
 			// Send email to the user who is deleted
 			const deletedUserMailOptions = {
 				from: config.smtpEmail,
 				to: userDetails?.email,
-				subject: `Your Access to ${companyDetails?.tenantName} has been Revoked - CostAllocation Pro`,
+				subject: `Your Access to ${companyDetails?.companyName} has been Revoked - CostAllocation Pro`,
 				html: userEmailContent,
 				// text: `Please use the following token to reset your password: ${forgotPasswordToken}`,
 			};
@@ -177,7 +177,7 @@ class UserController {
 					const emailContent = getAdminEmailOnUserDeleteTemplate({
 						adminUserName,
 						userName,
-						companyName: companyDetails?.tenantName,
+						companyName: companyDetails?.companyName,
 						url: config?.reactAppBaseUrl,
 					});
 
@@ -185,7 +185,7 @@ class UserController {
 					const mailOptions = {
 						from: config.smtpEmail,
 						to: item?.user?.email,
-						subject: `Access to ${companyDetails?.tenantName} has been Revoked - CostAllocation Pro`,
+						subject: `Access to ${companyDetails?.companyName} has been Revoked - CostAllocation Pro`,
 						html: emailContent,
 						// text: `Please use the following token to reset your password: ${forgotPasswordToken}`,
 					};

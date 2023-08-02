@@ -10,12 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model session {
-  sid    String   @id @default(uuid())
-  sess   Json
-  expire DateTime
-}
-
 model User {
   id                           String        @id @default(uuid())
   email                        String        @unique
@@ -24,42 +18,20 @@ model User {
   phone                        String?
   password                     String?
   forgotPasswordToken          String?
-  forgotPasswordTokenExpiresAt String?
   isVerified                   Boolean       @default(false)
-  status                       String?
+  status                       Boolean       @default(false)
   profileImg                   String?
-  customerId                   String?
   companies                    CompanyRole[]
-  invitedBy                    Invitations[] @relation("invitedBy")
-  invitedTo                    Invitations[] @relation("invitedTo")
-  tokens                       Token[]
   createdAt                    DateTime      @default(now())
   updatedAt                    DateTime      @updatedAt
 }
 
-model Token {
-  id           String   @id @default(uuid())
-  User         User?    @relation(fields: [userId], references: [id])
-  userId       String?
-  accessToken  String
-  refreshToken String
-  machineId    String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
-
 model Company {
   id                 String        @id @default(uuid())
-  tenantName         String?
-  tenantID           String?
-  accessToken        String?
-  refreshToken       String?
-  accessTokenUTCDate DateTime?
-  customerLastSync   DateTime?
+  companyName         String?
   users              CompanyRole[]
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
-  Invitations        Invitations[]
 }
 
 model Role {
@@ -71,23 +43,21 @@ model Role {
   status          Boolean       @default(true)
   users           CompanyRole[]
   permissions     Permission[]
-  invitations     Invitations[]
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 }
 
 model CompanyRole {
-  id          String        @id @default(uuid())
-  user        User?         @relation(fields: [userId], references: [id])
-  userId      String?
-  role        Role          @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  roleId      String
-  company     Company?      @relation(fields: [companyId], references: [id])
-  companyId   String?
-  status      Boolean       @default(true)
-  invitations Invitations[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id        String   @id @default(uuid())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId    String
+  company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+  status    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Permission {
@@ -103,27 +73,4 @@ model Permission {
   sortId         Int
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-}
-
-model Invitations {
-  id               String           @id @default(uuid())
-  invitedBy        User             @relation("invitedBy", fields: [invitedByUserId], references: [id])
-  invitedByUserId  String
-  invitedTo        User             @relation("invitedTo", fields: [invitedToUserId], references: [id])
-  invitedToUserId  String
-  role             Role             @relation(fields: [roleId], references: [id])
-  roleId           String
-  company          Company          @relation(fields: [companyId], references: [id])
-  companyId        String
-  companyRole      CompanyRole?     @relation(fields: [companyRoleId], references: [id])
-  companyRoleId    String?
-  invitationStatus InvitationStatus
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-}
-
-enum InvitationStatus {
-  Pending
-  Accepted
-  Rejected
 }

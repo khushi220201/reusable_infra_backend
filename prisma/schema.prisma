@@ -1,0 +1,129 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model session {
+  sid    String   @id @default(uuid())
+  sess   Json
+  expire DateTime
+}
+
+model User {
+  id                           String        @id @default(uuid())
+  email                        String        @unique
+  firstName                    String?
+  lastName                     String?
+  phone                        String?
+  password                     String?
+  forgotPasswordToken          String?
+  forgotPasswordTokenExpiresAt String?
+  isVerified                   Boolean       @default(false)
+  status                       String?
+  profileImg                   String?
+  customerId                   String?
+  companies                    CompanyRole[]
+  invitedBy                    Invitations[] @relation("invitedBy")
+  invitedTo                    Invitations[] @relation("invitedTo")
+  tokens                       Token[]
+  createdAt                    DateTime      @default(now())
+  updatedAt                    DateTime      @updatedAt
+}
+
+model Token {
+  id           String   @id @default(uuid())
+  User         User?    @relation(fields: [userId], references: [id])
+  userId       String?
+  accessToken  String
+  refreshToken String
+  machineId    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Company {
+  id                 String        @id @default(uuid())
+  tenantName         String?
+  tenantID           String?
+  accessToken        String?
+  refreshToken       String?
+  accessTokenUTCDate DateTime?
+  customerLastSync   DateTime?
+  users              CompanyRole[]
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  Invitations        Invitations[]
+}
+
+model Role {
+  id              String        @id @default(uuid())
+  roleName        String
+  roleDescription String
+  isCompanyAdmin  Boolean       @default(false)
+  isAdminRole     Boolean       @default(false)
+  status          Boolean       @default(true)
+  users           CompanyRole[]
+  permissions     Permission[]
+  invitations     Invitations[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model CompanyRole {
+  id          String        @id @default(uuid())
+  user        User?         @relation(fields: [userId], references: [id])
+  userId      String?
+  role        Role          @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId      String
+  company     Company?      @relation(fields: [companyId], references: [id])
+  companyId   String?
+  status      Boolean       @default(true)
+  invitations Invitations[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Permission {
+  id             String   @id @default(uuid())
+  permissionName String
+  all            Boolean  @default(false)
+  view           Boolean  @default(false)
+  edit           Boolean  @default(false)
+  delete         Boolean  @default(false)
+  add            Boolean  @default(false)
+  role           Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId         String
+  sortId         Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Invitations {
+  id               String           @id @default(uuid())
+  invitedBy        User             @relation("invitedBy", fields: [invitedByUserId], references: [id])
+  invitedByUserId  String
+  invitedTo        User             @relation("invitedTo", fields: [invitedToUserId], references: [id])
+  invitedToUserId  String
+  role             Role             @relation(fields: [roleId], references: [id])
+  roleId           String
+  company          Company          @relation(fields: [companyId], references: [id])
+  companyId        String
+  companyRole      CompanyRole?     @relation(fields: [companyRoleId], references: [id])
+  companyRoleId    String?
+  invitationStatus InvitationStatus
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+}
+
+enum InvitationStatus {
+  Pending
+  Accepted
+  Rejected
+}

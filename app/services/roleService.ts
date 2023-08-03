@@ -52,6 +52,8 @@ class RoleService {
 
 	// For create a role
 	createRole = async ({
+
+		/////////// isAdmin true for check(test)
 		isAdminRole = false,
 		roleName,
 		roleDescription,
@@ -65,22 +67,23 @@ class RoleService {
 		isCompanyRole?: boolean;
 	}) => {
 		try {
-			const isSameNameRole = await roleRepository.isSameNameRole(
-				orgId,
-				roleName
-			);
-			if (isSameNameRole) {
-				throw new CustomError(400, 'Role already exist with the same name');
-			} else {
+			// const isSameNameRole = await roleRepository.isSameNameRole(
+			// 	orgId,
+			// 	roleName
+			// );
+			// if (isSameNameRole) {
+			// 	throw new CustomError(400, 'Role already exist with the same name');
+			// } else {
 				const role = await roleRepository.createRole(
 					roleName,
 					roleDescription,
 					isAdminRole,
 					isCompanyRole
 				);
-				await roleRepository.combineRoleCompany(orgId, role.id);
+				console.log("🚀 ~ file: roleService.ts:81 ~ RoleService ~ role:", role)
+				//  await roleRepository.combineRoleCompany(orgId, role.id);
 				return role;
-			}
+			// }
 		} catch (error) {
 			console.log(error);
 			throw error;

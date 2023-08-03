@@ -10,7 +10,7 @@ const roleRoutes = Router();
 //For create a single role
 roleRoutes.post(
 	'/create',
-	createRoleValidationRules,
+	// createRoleValidationRules,
 	rolesController.createRole
 );
 // For get single roles from that company

@@ -8,6 +8,7 @@ import { CustomError } from '../models/customError';
 class RolesController {
 	//For create a single role
 	createRole = async (req: Request, res: Response, next: NextFunction) => {
+		console.log("object11111")
 		try {
 			checkValidation(req);
 			const {
@@ -16,13 +17,14 @@ class RolesController {
 				roleName,
 				isAdminRole = false,
 			} = req.body;
-			const isPermitted = await checkPermission(req, orgId, {
-				permissionName: 'Roles',
-				permission: ['add'],
-			});
-			if (!isPermitted) {
-				throw new CustomError(403, 'You are not authorized');
-			}
+			console.log("🚀 ~ file: rolesController.ts:20 ~ RolesController ~ createRole= ~ req.body:", req.body)
+			// const isPermitted = await checkPermission(req, orgId, {
+			// 	permissionName: 'Roles',
+			// 	permission: ['add'],
+			// });
+			// if (!isPermitted) {
+			// 	throw new CustomError(403, 'You are not authorized');
+			// }
 			const createdRole = await roleService.createRole({
 				orgId,
 				roleDescription,

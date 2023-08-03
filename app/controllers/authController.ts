@@ -17,10 +17,10 @@ class AuthController {
 //Register Controller
 async register(req: Request, res: Response, next: NextFunction) {
 	try {
-		const RegisterData = req.body;
-		const hashedPassword = await hashPassword(RegisterData.password);
-		RegisterData.password = hashedPassword
-		const response = await userRepository.register(RegisterData)
+		const {confirmPassword,companyName,...data} = req.body
+		const hashedPassword = await hashPassword(data.password);
+		data.password=hashedPassword
+		const response=await userRepository.register(data)
 		res.send(response)
 	} catch (err) {
 		console.log(err);

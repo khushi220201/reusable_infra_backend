@@ -18,7 +18,7 @@ class AuthController {
 async register(req: Request, res: Response, next: NextFunction) {
 	console.log("objectff")
 	try {
-		const data = req.body
+		const {confirmPassword,companyName,...data} = req.body
 		const hashedPassword = await hashPassword(data.password);
 		data.password=hashedPassword
 		const response=await userRepository.register(data)

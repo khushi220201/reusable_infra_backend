@@ -14,14 +14,13 @@ import {
 import config from '../../config';
 
 class AuthController {
-//Test Register
+//Register Controller
 async register(req: Request, res: Response, next: NextFunction) {
-	console.log("objectff")
 	try {
-		const data = req.body
-		const hashedPassword = await hashPassword(data.password);
-		data.password=hashedPassword
-		const response=await userRepository.register(data)
+		const RegisterData = req.body;
+		const hashedPassword = await hashPassword(RegisterData.password);
+		RegisterData.password = hashedPassword
+		const response = await userRepository.register(RegisterData)
 		res.send(response)
 	} catch (err) {
 		console.log(err);
@@ -33,18 +32,14 @@ async register(req: Request, res: Response, next: NextFunction) {
 	// async register(req: Request, res: Response, next: NextFunction) {
 	// 	try {
 	// 		const { data } = req.body;
-
 	// 		const customer = data?.subscription?.customer;
-
 	// 		const firstName = customer?.first_name;
 	// 		const lastName = customer?.last_name;
 	// 		const email = customer?.email;
 	// 		const customerId = customer?.customer_id;
 	// 		let companyAdminRole;
-
 	// 		// Check if company admin role exists
 	// 		companyAdminRole = await roleRepository.checkAdmin('Company Admin');
-
 	// 		if (!companyAdminRole) {
 	// 			companyAdminRole = await roleRepository.createRole(
 	// 				'Company Admin',

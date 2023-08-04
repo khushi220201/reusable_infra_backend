@@ -3,6 +3,8 @@ dotenv.config({ path: '.env' });
 
 // Env file configuration
 function config(Env: any) {
+	console.log('Env?.SMTP_EMAIL: ', Env?.SMTP_EMAIL);
+	console.log('Env?.SMTP_PASSWORD: ', Env?.SMTP_PASSWORD);
 	return {
 		port: Env?.PORT,
 		reactAppBaseUrl: Env?.REACT_APP_BASE_URL,
@@ -19,6 +21,8 @@ function config(Env: any) {
 		smtpEmail: Env?.SMTP_EMAIL,
 		smtpEmailLogin: Env?.SMTP_EMAIL_LOGIN,
 		smtpPassword: Env?.SMTP_PASSWORD,
+	
+		
 		smtpHost: Env?.SMTP_HOST,
 		smtpPort: Env?.SMTP_PORT,
 		forgotPasswordUrlExpireTime: 30 * 60 * 1000, // in milliseconds - 30 minutes

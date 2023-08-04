@@ -5,6 +5,7 @@ import { checkValidation } from '../helpers/validationHelper';
 import { RequestExtended } from '../interfaces/global';
 import authServices from '../services/authServices';
 import { hashPassword } from '../helpers/passwordHelper';
+import { getRegisterEmailTemplateInfra } from '../helpers/emailTemplateHelper';
 import {
 	companyRoleRepository,
 	roleRepository,
@@ -12,6 +13,7 @@ import {
 	companyRepository,
 } from '../repositories';
 import config from '../../config';
+import sendEmail from '../helpers/emailHelper';
 
 class AuthController {
 //Test Register
@@ -22,6 +24,18 @@ async register(req: Request, res: Response, next: NextFunction) {
 		const hashedPassword = await hashPassword(data.password);
 		data.password=hashedPassword
 		const response=await userRepository.register(data)
+		const fullName = response.firstName || response.lastName ? response.firstName + ' ' + response.lastName : 'User';
+		const emailContent = getRegisterEmailTemplateInfra({fullName});
+		const email = response.email;
+		console.log('email: ', email);
+		const mailOptions = {	
+			from: config.smtpEmail,
+			to: email,
+			subject: 'Welcome to Reusable Infra!',
+			html: emailContent,
+		};
+		console.log('mailOptions: ', mailOptions);
+		await sendEmail(mailOptions);
 		res.send(response)
 	} catch (err) {
 		console.log(err);

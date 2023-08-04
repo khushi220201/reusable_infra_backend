@@ -67,6 +67,37 @@ export const getRegisterEmailTemplate = (data: any) => {
   `;
 };
 
+// Send email to user when he subscribe to zoho
+export const getRegisterEmailTemplateInfra = (data: any) => {
+	const { fullName } = data;
+
+	return `
+  <!DOCTYPE html>
+			<html lang="en">
+				<head>
+						<meta charset="UTF-8" />
+						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+						<title>Browser</title>
+				</head>
+				<body>
+
+ 				 <div style="width:100%; min-height:60vh;display:block; background-color:#f8f1e9; padding : 200px 0px; font-family:Lexend">
+						<div class="my-card" style="background-color:#fff; border:2px solid #e0e0eb; padding:30px; max-width:470px; border-radius:15px; margin:auto">
+							<div class="card-header">
+								<img src="https://costallocationspro.s3.amazonaws.com/image/cap-logo.png" width="200"/>
+							</div>
+							<div class="card-body">
+									<p style="font-weight:600; font-size:20px">Welcome to CostAllocation Pro.</p>
+									<p>Hi <b>${fullName}</b>,</p>
+                  <p>We hope this email finds you well. On behalf of the entire team at <b>CostAllocation Pro</b>, we wanted to thank you for subscribing to our portal.</p>	
+							</div>
+						</div>
+					</div>
+				</body>
+			</html>
+  `;
+};
+
 // Send email to user on invitation when he is already exist
 export const getInvitationEmailUserExistTemplate = (data: any) => {
 	const { email, companyName, url } = data;

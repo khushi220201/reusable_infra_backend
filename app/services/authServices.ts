@@ -93,17 +93,15 @@ class AuthServices {
 	// 		const url = `${config?.changePasswordReactUrl}?token=${forgotPasswordToken}&first=true`;
 	// 		// const url = `${config?.reactAppBaseUrl}/change-password?token=${forgotPasswordToken}`;
 
-	// 		const fullName =
-	// 			firstName || lastName ? firstName + ' ' + lastName : 'User';
 
 	// 		const emailContent = getRegisterEmailTemplate({ fullName, url });
 
-	// 		const mailOptions = {
-	// 			from: config.smtpEmail,
-	// 			to: email,
-	// 			subject: 'Welcome to CostAllocation Pro!',
-	// 			html: emailContent,
-	// 		};
+			// const mailOptions = {
+			// 	from: config.smtpEmail,
+			// 	to: email,
+			// 	subject: 'Welcome to CostAllocation Pro!',
+			// 	html: emailContent,
+			// };
 
 	// 		await sendEmail(mailOptions);
 	// 		return user;

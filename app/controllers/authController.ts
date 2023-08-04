@@ -23,7 +23,22 @@ async register(req: Request, res: Response, next: NextFunction) {
 		const {confirmPassword,companyName,...data} = req.body
 		const hashedPassword = await hashPassword(data.password);
 		data.password=hashedPassword
+		data.isVerified=true
 		const response=await userRepository.register(data)
+		const companyData = {
+			// tenantID: Math.random().toString(),
+			companyName: req.body.companyName,
+		};
+		let companyAdminRole;
+		companyAdminRole = await roleRepository.createRole(
+							'Company Admin',
+							'All company permissions granted',
+							false,
+							true
+						);
+
+		const company = await companyRepository.create(companyData);
+		await companyRepository?.connectCompany(response.id, company?.id);
 		const fullName = response.firstName || response.lastName ? response.firstName + ' ' + response.lastName : 'User';
 		const emailContent = getRegisterEmailTemplateInfra({fullName});
 		const email = response.email;
@@ -41,7 +56,6 @@ async register(req: Request, res: Response, next: NextFunction) {
 		console.log(err);
 		next(err);
 	}
-}
 
 	// // Register User
 	// async register(req: Request, res: Response, next: NextFunction) {
@@ -96,7 +110,7 @@ async register(req: Request, res: Response, next: NextFunction) {
 
 	// 		const company = await companyRepository.create(companyData);
 
-	// 		await companyRepository?.connectCompany(user.id, company?.id);
+	 		// await companyRepository?.connectCompany(user.id, company?.id);
 
 	// 		// TEMP END Until we not create the company
 

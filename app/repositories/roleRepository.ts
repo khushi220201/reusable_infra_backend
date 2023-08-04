@@ -1,5 +1,5 @@
 import { prisma } from '../client/prisma';
-import { DefaultPermissions, DefaultAdminPermissions } from '../constants/data';
+import { DefaultPermissions, DefaultAdminPermissions, DefaultReadOnlyPermissions, DefaultAccountantPermissions } from '../constants/data';
 
 type SortCondition = {
 	orderBy: {
@@ -105,7 +105,9 @@ class RoleRepositories {
 							data:
 								isCompanyAdmin || isAdminRole
 									? DefaultAdminPermissions
-									: DefaultPermissions,
+									: roleName==="Read Only"?DefaultReadOnlyPermissions:
+									roleName==="Accountant"?DefaultAccountantPermissions: 
+									DefaultPermissions,
 						},
 					},
 				},

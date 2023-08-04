@@ -5,7 +5,6 @@ class UserRepository {
 //Test Register
 async register(data:any
 ) {
-	console.log("objectggggg")
 	try {
 		const user = await prisma.user.create({
 			data: data,

@@ -80,7 +80,6 @@ class RoleService {
 					isAdminRole,
 					isCompanyRole
 				);
-				console.log("🚀 ~ file: roleService.ts:81 ~ RoleService ~ role:", role)
 				 await roleRepository.combineRoleCompany(orgId, role.id);
 				return role;
 			}

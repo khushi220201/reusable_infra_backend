@@ -12,7 +12,6 @@ const transporter = nodemailer.createTransport({
 		pass: config.smtpPassword,
 	},
 });
-console.log('transporter: ', transporter);
 // Send Email
 const sendEmail = (options: nodemailer.SendMailOptions): Promise<any> => {
 	return new Promise((resolve, reject) => {

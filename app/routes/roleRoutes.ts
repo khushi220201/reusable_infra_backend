@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { rolesController } from '../controllers';
 import {
-	createRoleValidationRules,
+	// createRoleValidationRules,
 	deleteRoleValidationRules,
 	updateRoleValidationRules,
 } from '../helpers/validators';

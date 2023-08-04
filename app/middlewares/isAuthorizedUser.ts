@@ -1,4 +1,4 @@
-import { NextFunction, Response } from 'express';
+// import { NextFunction, Response } from 'express';
 import { prisma } from '../client/prisma';
 import { RequestExtended } from '../interfaces/global';
 // Assuming you have the necessary imports and setup for Prisma and Express

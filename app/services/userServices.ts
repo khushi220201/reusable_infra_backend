@@ -205,18 +205,22 @@ class UserServices {
 		firstName: string,
 		lastName: string
 	) {
+
 		try {
 			// Find user by Email
 			const user = await userRepository.getByEmail(email);
+			console.log("🚀 ~ file: userServices.ts:219 ~ UserServices ~ user:", user)
 
 			// Check if role exists
 			const roleExist = await roleRepository.getDetails(role);
+			console.log("🚀 ~ file: userServices.ts:223 ~ UserServices ~ roleExist:", roleExist)
 			if (!roleExist) {
 				const error = new CustomError(404, 'Role does not exist');
 				throw error;
 			}
 
 			if (user) {
+				console.log("yes in");
 				// Check if user already exist in the same company
 				const userExist = await roleRepository.userExist(user?.id, company);
 				if (userExist.length > 0) {
@@ -302,12 +306,13 @@ class UserServices {
 			} else {
 				// Checking the no of the user
 				const companyUsers = await userRepository.checkAddUserLimit(company);
-				if (companyUsers.totalNoOfUser.length >= 11) {
-					throw new CustomError(403, 'User limit is reached');
-				}
-				if (companyUsers.totalAdminUser.length >= 2 && roleExist.isAdminRole) {
-					throw new CustomError(403, 'Admin user limit is reached');
-				}
+				console.log("🚀 ~ file: userServices.ts:316 ~ UserServices ~ companyUsers:", companyUsers)
+				// if (companyUsers.totalNoOfUser.length >= 11) {
+				// 	throw new CustomError(403, 'User limit is reached');
+				// }
+				// if (companyUsers.totalAdminUser.length >= 2 && roleExist.isAdminRole) {
+				// 	throw new CustomError(403, 'Admin user limit is reached');
+				// }
 
 				// Reset Password Token Generate
 				const resetPasswordToken = await generateForgotPasswordToken({
@@ -316,19 +321,20 @@ class UserServices {
 				});
 
 				// Expires in 1 hour
-				const resetPasswordTokenExpiresAt: string = (
-					Date.now() + config?.registerUrlExpireTime
-				).toString();
+				// const resetPasswordTokenExpiresAt: string = (
+				// 	Date.now() + config?.registerUrlExpireTime
+				// ).toString();
 
 				// Create new user with forgot password token and verified false
 				const createdUser = await userRepository.create({
 					email: email,
-					forgotPasswordToken: resetPasswordToken,
-					forgotPasswordTokenExpiresAt: resetPasswordTokenExpiresAt,
+					// forgotPasswordToken: resetPasswordToken,
+					// forgotPasswordTokenExpiresAt: resetPasswordTokenExpiresAt,
 					phone: phone,
 					firstName,
 					lastName,
 				});
+				console.log("🚀 ~ file: userServices.ts:344 ~ UserServices ~ createdUser:", createdUser)
 
 				// Check if role (first time created) already exists without user
 

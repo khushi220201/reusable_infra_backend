@@ -45,6 +45,7 @@ class RolesController {
 	getAllRoles = async (req: any, res: Response, next: NextFunction) => {
 		try {
 			const { id } = req.params;
+			console.log("🚀 ~ file: rolesController.ts:48 ~ RolesController ~ getAllRoles= ~ id:", id)
 			const { page = 1, limit = 10, search, filter, type, sort } = req.query;
 
 			const roles = await roleService.getAllRoles(

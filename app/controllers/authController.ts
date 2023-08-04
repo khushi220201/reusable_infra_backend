@@ -14,20 +14,29 @@ import {
 import config from '../../config';
 
 class AuthController {
-//Test Register
-async register(req: Request, res: Response, next: NextFunction) {
-	console.log("objectff")
-	try {
-		const {confirmPassword,companyName,...data} = req.body
-		const hashedPassword = await hashPassword(data.password);
-		data.password=hashedPassword
-		const response=await userRepository.register(data)
-		res.send(response)
-	} catch (err) {
-		console.log(err);
-		next(err);
+	//Test Register
+	async register(req: Request, res: Response, next: NextFunction) {
+		console.log("objectff")
+		try {
+			const { confirmPassword, companyName, ...data } = req.body
+			const hashedPassword = await hashPassword(data.password);
+			data.password = hashedPassword
+			data.isVerified=true
+			const response = await userRepository.register(data)
+			const companyData = {
+				// tenantID: Math.random().toString(),
+				companyName: req.body.companyName,
+			};
+
+			const company = await companyRepository.create(companyData);
+			await companyRepository?.connectCompany(response.id, company?.id);
+
+			res.send(response)
+		} catch (err) {
+			console.log(err);
+			next(err);
+		}
 	}
-}
 
 	// // Register User
 	// async register(req: Request, res: Response, next: NextFunction) {
@@ -82,7 +91,7 @@ async register(req: Request, res: Response, next: NextFunction) {
 
 	// 		const company = await companyRepository.create(companyData);
 
-	// 		await companyRepository?.connectCompany(user.id, company?.id);
+	 		// await companyRepository?.connectCompany(user.id, company?.id);
 
 	// 		// TEMP END Until we not create the company
 

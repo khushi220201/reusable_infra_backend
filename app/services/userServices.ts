@@ -209,18 +209,15 @@ class UserServices {
 		try {
 			// Find user by Email
 			const user = await userRepository.getByEmail(email);
-			console.log("🚀 ~ file: userServices.ts:219 ~ UserServices ~ user:", user)
 
 			// Check if role exists
 			const roleExist = await roleRepository.getDetails(role);
-			console.log("🚀 ~ file: userServices.ts:223 ~ UserServices ~ roleExist:", roleExist)
 			if (!roleExist) {
 				const error = new CustomError(404, 'Role does not exist');
 				throw error;
 			}
 
 			if (user) {
-				console.log("yes in");
 				// Check if user already exist in the same company
 				const userExist = await roleRepository.userExist(user?.id, company);
 				if (userExist.length > 0) {
@@ -305,8 +302,7 @@ class UserServices {
 				return invitedUser;
 			} else {
 				// Checking the no of the user
-				const companyUsers = await userRepository.checkAddUserLimit(company);
-				console.log("🚀 ~ file: userServices.ts:316 ~ UserServices ~ companyUsers:", companyUsers)
+				// const companyUsers = await userRepository.checkAddUserLimit(company);
 				// if (companyUsers.totalNoOfUser.length >= 11) {
 				// 	throw new CustomError(403, 'User limit is reached');
 				// }
@@ -334,7 +330,6 @@ class UserServices {
 					firstName,
 					lastName,
 				});
-				console.log("🚀 ~ file: userServices.ts:344 ~ UserServices ~ createdUser:", createdUser)
 
 				// Check if role (first time created) already exists without user
 

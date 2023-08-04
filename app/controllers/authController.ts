@@ -36,13 +36,13 @@ class AuthController {
 				true
 			);
 
-			let companyReadOnlyRole = await roleRepository.createRole(
+			const companyReadOnlyRole = await roleRepository.createRole(
 				'Read Only',
 				'Read Only permissions granted',
 				false,
 				false
 			);
-			let companyAccountantRole = await roleRepository.createRole(
+			const companyAccountantRole = await roleRepository.createRole(
 				'Accountant',
 				'Accountant permissions granted',
 				false,

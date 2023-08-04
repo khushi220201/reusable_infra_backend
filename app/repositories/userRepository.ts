@@ -318,7 +318,6 @@ async register(data:any
 					},
 				},
 			});
-
 			return adminEmails;
 		} catch (err) {
 			throw err;

@@ -7,13 +7,13 @@ import userServices from '../services/userServices';
 import { checkValidation } from '../helpers/validationHelper';
 import { RequestExtended } from '../interfaces/global';
 import companyRoleRepository from '../repositories/companyRoleRepository';
-import sendEmail from '../helpers/emailHelper';
-import { companyRepository } from '../repositories';
-import config from '../../config';
-import {
-	getAdminEmailOnUserDeleteTemplate,
-	getUserEmailOnDeleteTemplate,
-} from '../helpers/emailTemplateHelper';
+// import sendEmail from '../helpers/emailHelper';
+// import { companyRepository } from '../repositories';
+// import config from '../../config';
+// import {
+// 	getAdminEmailOnUserDeleteTemplate,
+// 	getUserEmailOnDeleteTemplate,
+// } from '../helpers/emailTemplateHelper';
 import { checkPermission } from '../middlewares/isAuthorizedUser';
 import { CustomError } from '../models/customError';
 
@@ -122,6 +122,7 @@ class UserController {
 		try {
 			checkValidation(req);
 			const { user, company } = req.body;
+			console.log("🚀 ~ file: userController.ts:126 ~ UserController ~ deleteUser ~ req.body:", req.body)
 			// Checking is the user is permitted
 			const isPermitted = await checkPermission(req, company, {
 				permissionName: 'Users',
@@ -132,67 +133,67 @@ class UserController {
 				throw new CustomError(403, 'You are not authorized');
 			}
 
-			const adminEmails = await userRepository.getAllAdminEmails(company);
+			// const adminEmails = await userRepository.getAllAdminEmails(company);
 
 			// const emails = await adminEmails.map((item) => item?.user?.email);
 
-			const companyDetails = await companyRepository.getDetails(company);
+			// const companyDetails = await companyRepository.getDetails(company);
 
-			const userDetails = await userRepository.getById(user);
+			// const userDetails = await userRepository.getById(user);
 
-			let userName: string;
+			// let userName: string;
 
-			if (userDetails?.firstName && userDetails?.lastName) {
-				userName = userDetails?.firstName + ' ' + userDetails?.lastName;
-			} else {
-				userName = userDetails?.email;
-			}
+			// if (userDetails?.firstName && userDetails?.lastName) {
+			// 	userName = userDetails?.firstName + ' ' + userDetails?.lastName;
+			// } else {
+			// 	userName = userDetails?.email;
+			// }
 
-			const userEmailContent = getUserEmailOnDeleteTemplate({
-				userName,
-				companyName: companyDetails?.companyName,
-			});
+			// const userEmailContent = getUserEmailOnDeleteTemplate({
+			// 	userName,
+			// 	companyName: companyDetails?.companyName,
+			// });
 
 			// Send email to the user who is deleted
-			const deletedUserMailOptions = {
-				from: config.smtpEmail,
-				to: userDetails?.email,
-				subject: `Your Access to ${companyDetails?.companyName} has been Revoked - CostAllocation Pro`,
-				html: userEmailContent,
-				// text: `Please use the following token to reset your password: ${forgotPasswordToken}`,
-			};
+			// const deletedUserMailOptions = {
+			// 	from: config.smtpEmail,
+			// 	to: userDetails?.email,
+			// 	subject: `Your Access to ${companyDetails?.companyName} has been Revoked - CostAllocation Pro`,
+			// 	html: userEmailContent,
+			// 	// text: `Please use the following token to reset your password: ${forgotPasswordToken}`,
+			// };
 
-			await sendEmail(deletedUserMailOptions);
+			// await sendEmail(deletedUserMailOptions);
 
-			await Promise.all(
-				await adminEmails.map(async (item: any) => {
-					let adminUserName;
+			// await Promise.all(
+			// 	await adminEmails.map(async (item: any) => {
+			// 		let adminUserName;
 
-					if (item?.user?.firstName && item?.user?.lastName) {
-						adminUserName = item?.user?.firstName + ' ' + item?.user?.lastName;
-					} else {
-						adminUserName = item?.user?.email;
-					}
+			// 		if (item?.user?.firstName && item?.user?.lastName) {
+			// 			adminUserName = item?.user?.firstName + ' ' + item?.user?.lastName;
+			// 		} else {
+			// 			adminUserName = item?.user?.email;
+			// 		}
 
-					const emailContent = getAdminEmailOnUserDeleteTemplate({
-						adminUserName,
-						userName,
-						companyName: companyDetails?.companyName,
-						url: config?.reactAppBaseUrl,
-					});
+			// 		const emailContent = getAdminEmailOnUserDeleteTemplate({
+			// 			adminUserName,
+			// 			userName,
+			// 			companyName: companyDetails?.companyName,
+			// 			url: config?.reactAppBaseUrl,
+			// 		});
 
-					// Send the email to all the admins
-					const mailOptions = {
-						from: config.smtpEmail,
-						to: item?.user?.email,
-						subject: `Access to ${companyDetails?.companyName} has been Revoked - CostAllocation Pro`,
-						html: emailContent,
-						// text: `Please use the following token to reset your password: ${forgotPasswordToken}`,
-					};
+			// 		// Send the email to all the admins
+			// 		const mailOptions = {
+			// 			from: config.smtpEmail,
+			// 			to: item?.user?.email,
+			// 			subject: `Access to ${companyDetails?.companyName} has been Revoked - CostAllocation Pro`,
+			// 			html: emailContent,
+			// 			// text: `Please use the following token to reset your password: ${forgotPasswordToken}`,
+			// 		};
 
-					await sendEmail(mailOptions);
-				})
-			);
+			// 		await sendEmail(mailOptions);
+			// 	})
+			// );
 
 			const deletedUser = await userServices.deleteUser(user, company);
 			return DefaultResponse(
@@ -208,7 +209,6 @@ class UserController {
 
 	// Invite User
 	async inviteUser(req: RequestExtended, res: Response, next: NextFunction) {
-		console.log("in 211" );
 		try {
 			checkValidation(req);
 			const {
@@ -219,7 +219,6 @@ class UserController {
 				firstName = '',
 				lastName = '',
 			} = req.body;
-			console.log(req.body, "222");
 			// Checking is the user is permitted
 			const isPermitted = await checkPermission(req, company, {
 				permissionName: 'Users',

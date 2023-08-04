@@ -2,7 +2,7 @@ import config from '../../config';
 import sendEmail from '../helpers/emailHelper';
 import {
 	getForgotPasswordTemplate,
-	getRegisterEmailTemplate,
+	// getRegisterEmailTemplate,
 } from '../helpers/emailTemplateHelper';
 import { comparePassword, hashPassword } from '../helpers/passwordHelper';
 import {

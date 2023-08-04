@@ -16,7 +16,7 @@ class RolesController {
 				roleName,
 				isAdminRole = false,
 			} = req.body;
-			console.log("🚀 ~ file: rolesController.ts:20 ~ RolesController ~ createRole= ~ req.body:", req.body)
+			// console.log("🚀 ~ file: rolesController.ts:20 ~ RolesController ~ createRole= ~ req.body:", req.body)
 			// const isPermitted = await checkPermission(req, orgId, {
 			// 	permissionName: 'Roles',
 			// 	permission: ['add'],

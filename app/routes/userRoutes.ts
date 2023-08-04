@@ -5,7 +5,7 @@ import {
 	inviteUserValidationRules,
 	updateUserByAdminValidation,
 } from '../helpers/validators';
-import { isAdminUser } from '../middlewares/adminMiddleware';
+// import { isAdminUser } from '../middlewares/adminMiddleware';
 const router = express.Router();
 
 // Get All Users

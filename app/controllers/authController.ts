@@ -29,8 +29,7 @@ class AuthController {
 				// tenantID: Math.random().toString(),
 				companyName: req.body.companyName,
 			};
-			let companyAdminRole;
-			companyAdminRole = await roleRepository.createRole(
+			const companyAdminRole = await roleRepository.createRole(
 				'Company Admin',
 				'All company permissions granted',
 				false,

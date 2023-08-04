@@ -208,6 +208,7 @@ class UserController {
 
 	// Invite User
 	async inviteUser(req: RequestExtended, res: Response, next: NextFunction) {
+		console.log("in 211" );
 		try {
 			checkValidation(req);
 			const {
@@ -218,7 +219,7 @@ class UserController {
 				firstName = '',
 				lastName = '',
 			} = req.body;
-
+			console.log(req.body, "222");
 			// Checking is the user is permitted
 			const isPermitted = await checkPermission(req, company, {
 				permissionName: 'Users',

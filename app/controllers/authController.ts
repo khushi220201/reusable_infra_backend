@@ -23,10 +23,18 @@ class AuthController {
 			data.password = hashedPassword
 			data.isVerified=true
 			const response = await userRepository.register(data)
+			console.log("🚀 ~ file: authController.ts:26 ~ AuthController ~ register ~ response:", response)
 			const companyData = {
 				// tenantID: Math.random().toString(),
 				companyName: req.body.companyName,
 			};
+			let companyAdminRole;
+			companyAdminRole = await roleRepository.createRole(
+								'Company Admin',
+								'All company permissions granted',
+								false,
+								true
+							);
 
 			const company = await companyRepository.create(companyData);
 			await companyRepository?.connectCompany(response.id, company?.id);

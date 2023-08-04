@@ -80,16 +80,15 @@ export const getRegisterEmailTemplateInfra = (data: any) => {
 						<title>Browser</title>
 				</head>
 				<body>
-
  				 <div style="width:100%; min-height:60vh;display:block; background-color:#f8f1e9; padding : 200px 0px; font-family:Lexend">
 						<div class="my-card" style="background-color:#fff; border:2px solid #e0e0eb; padding:30px; max-width:470px; border-radius:15px; margin:auto">
 							<div class="card-header">
-								<img src="https://costallocationspro.s3.amazonaws.com/image/cap-logo.png" width="200"/>
+								<img src="https://plus.unsplash.com/premium_photo-1669828831467-bc0b867e2947?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60" width="200"/>
 							</div>
 							<div class="card-body">
-									<p style="font-weight:600; font-size:20px">Welcome to CostAllocation Pro.</p>
+									<p style="font-weight:600; font-size:20px">Welcome to Animal Planet.</p>
 									<p>Hi <b>${fullName}</b>,</p>
-                  <p>We hope this email finds you well. On behalf of the entire team at <b>CostAllocation Pro</b>, we wanted to thank you for subscribing to our portal.</p>	
+                  <p>We hope this email finds you well. On behalf of the entire team at <b>Reusable Infra App</b>, we wanted to thank you for registering to our app.</p>	
 							</div>
 						</div>
 					</div>

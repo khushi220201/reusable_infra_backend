@@ -14,6 +14,7 @@ import {
 } from '../repositories';
 import config from '../../config';
 import sendEmail from '../helpers/emailHelper';
+import { verifyForgotPasswordToken } from '../helpers/tokenHelper';
 
 class AuthController {
 //Test Register
@@ -56,7 +57,7 @@ async register(req: Request, res: Response, next: NextFunction) {
 		console.log(err);
 		next(err);
 	}
-
+}
 	// // Register User
 	// async register(req: Request, res: Response, next: NextFunction) {
 	// 	try {
@@ -130,8 +131,7 @@ async register(req: Request, res: Response, next: NextFunction) {
 	// }
 
 	// Login User
-	async login(req: RequestExtended, res: Response, next: NextFunction) {
-		console.log("object")
+	async login(req : RequestExtended, res : Response, next: NextFunction) {
 		try {
 			checkValidation(req);
 			const { email, password } = req.body;
@@ -196,7 +196,6 @@ async register(req: Request, res: Response, next: NextFunction) {
 		try {
 			const { token } = req.query;
 			await authServices.verifyForgotPassword(token as string);
-
 			return DefaultResponse(
 				res,
 				200,
@@ -328,7 +327,7 @@ async register(req: Request, res: Response, next: NextFunction) {
 
 	// Logout
 
-	async logout(req: RequestExtended, res: Response, next: NextFunction) {
+	async logout(req: RequestExtended, res : Response, next: NextFunction) {
 		try {
 			const accessToken = req.accessToken;
 			const refreshToken = req.refreshToken;

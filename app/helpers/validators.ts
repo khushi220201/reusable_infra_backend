@@ -41,6 +41,36 @@ export const changePasswordValidationRules = [
 		}),
 ];
 
+// Set Password validation rules
+export const setPasswordValidationRules = [
+	// Validate password
+	body('password')
+		.isLength({ min: 8 })
+		.withMessage('Password must be at least 8 characters long')
+		.matches(
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/
+		)
+		.withMessage(
+			'Password must contain at least one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long'
+		),
+
+	// Validate confirmPassword
+	body('confirmPassword')
+		.notEmpty()
+		.withMessage('Confirm password required')
+		.custom((value: any, { req }: any) => {
+			if (value !== req.body.password) {
+				throw new Error('Passwords do not match');
+			}
+			return true;
+		}),
+];
+
+
+
+
+
+
 // Invite User validation rules
 export const inviteUserValidationRules = [
 	body('email').isEmail().withMessage('Invalid email address'),

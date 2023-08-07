@@ -235,6 +235,28 @@ class AuthController {
 		}
 	}
 
+		// Set Password
+		async SetPassword(req: Request, res: Response, next: NextFunction) {
+			try {
+				checkValidation(req);
+				const { password } = req.body;
+				const { token } = req.params;
+	
+				const user = await authServices.setPassword(token, password);
+	
+				return DefaultResponse(
+					res,
+					200,
+					'User password changed successfully',
+					user
+				);
+			} catch (err) {
+				next(err);
+			}
+		}
+
+
+
 	// Fetch Profile
 	async fetchProfile(req: RequestExtended, res: Response, next: NextFunction) {
 		try {

@@ -138,7 +138,7 @@ class AuthServices {
 			// Store token in the database
 			await userRepository.update(user?.id, {
 				forgotPasswordToken: forgotPasswordToken,
-				forgotPasswordTokenExpiresAt: forgotPasswordTokenExpiresAt,
+				// forgotPasswordTokenExpiresAt: forgotPasswordTokenExpiresAt,
 			});
 
 			const fullName =
@@ -299,7 +299,7 @@ class AuthServices {
 				password: hashedPassword,
 				isVerified: true,
 				forgotPasswordToken: null,
-				forgotPasswordTokenExpiresAt: null,
+				// forgotPasswordTokenExpiresAt: null,
 			});
 
 			return updatedUser;

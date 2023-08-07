@@ -1,43 +1,49 @@
 // Send email to user for forgot password
 export const getForgotPasswordTemplate = (data: any) => {
-	const { fullName, url } = data;
-	return `<!DOCTYPE html>
-			<html lang="en">
-				<head>
-						<meta charset="UTF-8" />
-						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
-						<title>Browser</title> 
-				</head>
-				<body>
-				 
- 				 <div style="width:100%; min-height:60vh;display:block; background-color:#f8f1e9; padding : 200px 0px; font-family:'Lexend', sans-serif;">
-						<div class="my-card" style="background-color:#fff; border:2px solid #e0e0eb; padding:30px; max-width:470px; border-radius:15px; margin:auto">
-							<div class="card-header">
-								<img src="https://costallocationspro.s3.amazonaws.com/image/cap-logo.png" width="200"/>
-							</div>
-							<div class="card-body">
-									<p style="font-weight:600; font-size:20px">Let's Reset your Password</p>
-									<p>Hi <b>${fullName}</b>,</p>
-									<p>We have received a request to reset your password.</p>
-									<p>If you didn't make this request, please disregard this message. However, if you did the password reset, you can proceed to reset now. 
-										<br/>
-									<p style="margin:30px 0px"><button class="reset-button" style="border:none;border-radius:20px;padding:8px 20px;background-color:#000;"><a href='${url}' style="color:white;text-decoration:none;">Reset Your Password<a/></button> </p>
-							</div>
-						</div> 
-					</div>
-				</body>
-			</html>`;
+  const { fullName, url } = data;
+  return `<!DOCTYPE html>
+	<html lang="en">
+	
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+		<title>Password Reset Request</title>
+	</head>
+	
+	<body style="margin: 0; padding: 0; font-family: 'Lexend', sans-serif; background-color: #c9dbf3;">
+		<div style="width: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: center;">
+			<div style="background-color: #fff; border: 2px solid #e0e0eb; padding: 30px; max-width: 470px; border-radius: 15px;">
+				<div style="text-align: center;">
+					<img src="https://adma.tmsimg.com/assets/s57394_ll_h9_ad.png?w=360&h=270?w=100" width="200" alt="Logo" />
+				</div>
+				<div>
+					<p style="font-weight: 600; font-size: 20px;">Let's Reset your Password</p>
+					<p>Hello <b>${fullName}</b>,</p>
+					<p>We have received a request to reset your password for your account with us.</p>
+					<p>If you initiated this password reset, please follow the link provided below to proceed with the reset
+						process. If you did not make this request, kindly disregard this message.</p>
+					<p style="margin: 30px 0; text-align: center;">
+						<a href="${url}" style="text-decoration: none;">
+							<button style="border: none; border-radius: 6px; padding: 15px 30px; background-color: #286fd1;font-size: 1rem; color: white; cursor: pointer;">
+								Reset Your Password
+							</button>
+						</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</body>
+	</html>`;
 };
 
 // Send email to user when he subscribe to zoho
 export const getRegisterEmailTemplate = (data: any) => {
-	const { fullName, url } = data;
+  const { fullName, url } = data;
 
-	return `
+  return `
   <!DOCTYPE html>
 			<html lang="en">
 				<head>
@@ -47,7 +53,7 @@ export const getRegisterEmailTemplate = (data: any) => {
 				</head>
 				<body>
 
- 				 <div style="width:100%; min-height:60vh;display:block; background-color:#f8f1e9; padding : 200px 0px; font-family:Lexend">
+ 				 <div style="width:100%; min-height:60vh;display:block; background-color:#f8f1e9 !important; padding : 200px 0px; font-family:Lexend">
 						<div class="my-card" style="background-color:#fff; border:2px solid #e0e0eb; padding:30px; max-width:470px; border-radius:15px; margin:auto">
 							<div class="card-header">
 								<img src="https://costallocationspro.s3.amazonaws.com/image/cap-logo.png" width="200"/>
@@ -69,39 +75,46 @@ export const getRegisterEmailTemplate = (data: any) => {
 
 // Send email to user when he subscribe to zoho
 export const getRegisterEmailTemplateInfra = (data: any) => {
-	const { fullName } = data;
+  const { fullName } = data;
 
-	return `
+  return `
   <!DOCTYPE html>
-			<html lang="en">
-				<head>
-						<meta charset="UTF-8" />
-						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-						<title>Browser</title>
-				</head>
-				<body>
- 				 <div style="width:100%; min-height:60vh;display:block; background-color:#f8f1e9; padding : 200px 0px; font-family:Lexend">
-						<div class="my-card" style="background-color:#fff; border:2px solid #e0e0eb; padding:30px; max-width:470px; border-radius:15px; margin:auto">
-							<div class="card-header">
-								<img src="https://plus.unsplash.com/premium_photo-1669828831467-bc0b867e2947?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60" width="200"/>
-							</div>
-							<div class="card-body">
-									<p style="font-weight:600; font-size:20px">Welcome to Animal Planet.</p>
-									<p>Hi <b>${fullName}</b>,</p>
-                  <p>We hope this email finds you well. On behalf of the entire team at <b>Reusable Infra App</b>, we wanted to thank you for registering to our app.</p>	
-							</div>
-						</div>
-					</div>
-				</body>
-			</html>
+  <html lang="en">
+  <head>
+	  <meta charset="UTF-8" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	  <link rel="preconnect" href="https://fonts.googleapis.com">
+	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+	  <title>Password Reset Request</title>
+  </head>
+  
+  <body style="margin: 0; padding: 0; font-family: 'Lexend', sans-serif; background-color: #c9dbf3;">
+	  <div style="width: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: center;">
+		  <div
+			  style="background-color: #fff; border: 2px solid #e0e0eb; padding: 30px; max-width: 470px; border-radius: 15px;">
+			  <div style="text-align: center;">
+				  <img src="https://adma.tmsimg.com/assets/s57394_ll_h9_ad.png?w=360&h=270?w=100" width="200"
+					  alt="Logo" />
+			  </div>
+			  <div>
+				  <p style="font-weight: 600; font-size: 20px; text-align: center;">Welcome to Animal Planet.</p>
+				  <p>Hi <b> ${fullName}</b>,</p>
+				  <p>We hope this email finds you well. On behalf of the entire team at <b>Reusable Infra App</b>, we
+					  wanted to thank you for registering to our app.</p>
+			  </div>
+		  </div>
+	  </div>
+  </body>
+  </html>
   `;
 };
 
 // Send email to user on invitation when he is already exist
 export const getInvitationEmailUserExistTemplate = (data: any) => {
-	const { email, companyName, url } = data;
+  const { email, companyName, url } = data;
 
-	return `
+  return `
     <!DOCTYPE html>
 			<html lang="en">
 				<head>
@@ -136,9 +149,9 @@ export const getInvitationEmailUserExistTemplate = (data: any) => {
 
 // Send email to admin on user invitation
 export const getInvitationAdminMailTemplate = (data: any) => {
-	const { invitedByEmail, email, companyName, url } = data;
+  const { invitedByEmail, email, companyName, url } = data;
 
-	return `
+  return `
     <!DOCTYPE html>
 			<html lang="en">
 				<head>
@@ -173,9 +186,9 @@ export const getInvitationAdminMailTemplate = (data: any) => {
 
 // Send email to user on invitation for the first time
 export const getInvitationEmailUserTemplate = (data: any) => {
-	const { email, companyName, url } = data;
+  const { email, companyName, url } = data;
 
-	return `
+  return `
  <!DOCTYPE html>
 			<html lang="en">
 				<head>
@@ -211,9 +224,9 @@ export const getInvitationEmailUserTemplate = (data: any) => {
 
 // Send email to admin when user is deleted
 export const getAdminEmailOnUserDeleteTemplate = (data: any) => {
-	const { adminUserName, userName, companyName, url } = data;
+  const { adminUserName, userName, companyName, url } = data;
 
-	return `	
+  return `	
  		<!DOCTYPE html>
 			<html lang="en">
 				<head>
@@ -249,9 +262,9 @@ export const getAdminEmailOnUserDeleteTemplate = (data: any) => {
 
 // Send email to the user who is deleted
 export const getUserEmailOnDeleteTemplate = (data: any) => {
-	const { userName, companyName } = data;
+  const { userName, companyName } = data;
 
-	return `
+  return `
 		<!DOCTYPE html>
 			<html lang="en">
 				<head>

@@ -324,7 +324,6 @@ class UserServices {
 				const createdUser = await userRepository.create({
 					email: email,
 					forgotPasswordToken: resetPasswordToken,
-					forgotPasswordTokenExpiresAt: resetPasswordTokenExpiresAt,
 					phone: phone,
 					firstName,
 					lastName,

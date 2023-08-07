@@ -17,47 +17,60 @@ import sendEmail from '../helpers/emailHelper';
 import { verifyForgotPasswordToken } from '../helpers/tokenHelper';
 
 class AuthController {
-//Test Register
-async register(req: Request, res: Response, next: NextFunction) {
-	console.log("objectff")
-	try {
-		const {confirmPassword,companyName,...data} = req.body
-		const hashedPassword = await hashPassword(data.password);
-		data.password=hashedPassword
-		data.isVerified=true
-		const response=await userRepository.register(data)
-		const companyData = {
-			// tenantID: Math.random().toString(),
-			companyName: req.body.companyName,
-		};
-		let companyAdminRole;
-		companyAdminRole = await roleRepository.createRole(
-							'Company Admin',
-							'All company permissions granted',
-							false,
-							true
-						);
+	//Test Register
+	async register(req: Request, res: Response, next: NextFunction) {
+		try {
+			const { confirmPassword, companyName, ...data } = req.body
+			const hashedPassword = await hashPassword(data.password);
+			data.password = hashedPassword
+			data.isVerified = true
+			const response = await userRepository.register(data)
+			const companyData = {
+				// tenantID: Math.random().toString(),
+				companyName: req.body.companyName,
+			};
+			const companyAdminRole = await roleRepository.createRole(
+				'Company Admin',
+				'All company permissions granted',
+				true,
+				true
+			);
 
-		const company = await companyRepository.create(companyData);
-		await companyRepository?.connectCompany(response.id, company?.id);
-		const fullName = response.firstName || response.lastName ? response.firstName + ' ' + response.lastName : 'User';
-		const emailContent = getRegisterEmailTemplateInfra({fullName});
-		const email = response.email;
-		console.log('email: ', email);
-		const mailOptions = {	
-			from: config.smtpEmail,
-			to: email,
-			subject: 'Welcome to Reusable Infra!',
-			html: emailContent,
-		};
-		console.log('mailOptions: ', mailOptions);
-		await sendEmail(mailOptions);
-		res.send(response)
-	} catch (err) {
-		console.log(err);
-		next(err);
+			const companyReadOnlyRole = await roleRepository.createRole(
+				'Read Only',
+				'Read Only permissions granted',
+				false,
+				false
+			);
+			const companyAccountantRole = await roleRepository.createRole(
+				'Accountant',
+				'Accountant permissions granted',
+				false,
+				false
+			);
+
+			
+			const company = await companyRepository.create(companyData);
+			await roleRepository.combineRoleCompany(company?.id, companyAdminRole?.id);
+			await roleRepository.combineRoleCompany(company?.id, companyReadOnlyRole?.id);
+			await roleRepository.combineRoleCompany(company?.id, companyAccountantRole?.id);
+			await companyRepository?.connectCompany(response.id, company?.id);
+			const fullName = response.firstName || response.lastName ? response.firstName + ' ' + response.lastName : 'User';
+			const emailContent = getRegisterEmailTemplateInfra({ fullName });
+			const email = response.email;
+			const mailOptions = {
+				from: config.smtpEmail,
+				to: email,
+				subject: 'Welcome to Reusable Infra!',
+				html: emailContent,
+			};
+			await sendEmail(mailOptions);
+			res.send(response)
+		} catch (err) {
+			console.log(err);
+			next(err);
+		}
 	}
-}
 	// // Register User
 	// async register(req: Request, res: Response, next: NextFunction) {
 	// 	try {
@@ -111,7 +124,7 @@ async register(req: Request, res: Response, next: NextFunction) {
 
 	// 		const company = await companyRepository.create(companyData);
 
-	 		// await companyRepository?.connectCompany(user.id, company?.id);
+	// await companyRepository?.connectCompany(user.id, company?.id);
 
 	// 		// TEMP END Until we not create the company
 
@@ -131,7 +144,7 @@ async register(req: Request, res: Response, next: NextFunction) {
 	// }
 
 	// Login User
-	async login(req : RequestExtended, res : Response, next: NextFunction) {
+	async login(req: RequestExtended, res: Response, next: NextFunction) {
 		try {
 			checkValidation(req);
 			const { email, password } = req.body;
@@ -139,10 +152,6 @@ async register(req: Request, res: Response, next: NextFunction) {
 			const { accessToken, refreshToken, user } = await authServices.login(
 				email.toLowerCase(),
 				password
-			);
-
-			console.log(
-				'Access token: ' + accessToken + ' refresh token: ' + refreshToken
 			);
 
 			// req.session.accessToken = accessToken;
@@ -225,6 +234,28 @@ async register(req: Request, res: Response, next: NextFunction) {
 			next(err);
 		}
 	}
+
+		// Set Password
+		async SetPassword(req: Request, res: Response, next: NextFunction) {
+			try {
+				checkValidation(req);
+				const { password } = req.body;
+				const { token } = req.params;
+	
+				const user = await authServices.setPassword(token, password);
+	
+				return DefaultResponse(
+					res,
+					200,
+					'User password changed successfully',
+					user
+				);
+			} catch (err) {
+				next(err);
+			}
+		}
+
+
 
 	// Fetch Profile
 	async fetchProfile(req: RequestExtended, res: Response, next: NextFunction) {
@@ -327,7 +358,7 @@ async register(req: Request, res: Response, next: NextFunction) {
 
 	// Logout
 
-	async logout(req: RequestExtended, res : Response, next: NextFunction) {
+	async logout(req: RequestExtended, res: Response, next: NextFunction) {
 		try {
 			const accessToken = req.accessToken;
 			const refreshToken = req.refreshToken;

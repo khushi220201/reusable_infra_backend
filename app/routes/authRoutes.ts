@@ -4,6 +4,7 @@ import {
 	changePasswordValidationRules,
 	forgotPasswordValidationRules,
 	loginValidationRules,
+	setPasswordValidationRules,
 	updateProfileValidationRules,
 } from '../helpers/validators';
 import { isAuthenticated } from '../middlewares/authMiddleware';
@@ -41,6 +42,14 @@ router.post(
 	changePasswordValidationRules,
 	authController.changePassword
 );
+
+// Change Password
+router.post(
+	'/set-password/:token',
+	setPasswordValidationRules,
+	authController.SetPassword
+);
+
 
 // Fetch Profile
 router.get('/fetch-profile', isAuthenticated, authController.fetchProfile);

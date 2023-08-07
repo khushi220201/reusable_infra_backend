@@ -6,7 +6,10 @@ import {
 	getInvitationEmailUserExistTemplate,
 	getInvitationEmailUserTemplate,
 } from '../helpers/emailTemplateHelper';
-import { generateForgotPasswordToken } from '../helpers/tokenHelper';
+import {
+	generateAccessToken,
+	//  generateForgotPasswordToken
+} from '../helpers/tokenHelper';
 import { UpdateUserInfo } from '../interfaces/userInterface';
 import { CustomError } from '../models/customError';
 import {
@@ -40,33 +43,33 @@ class UserServices {
 			// Conditions for search
 			const searchCondition = search
 				? {
-						OR: [
-							{
-								firstName: {
-									mode: 'insensitive',
-									contains: search as string,
-								},
+					OR: [
+						{
+							firstName: {
+								mode: 'insensitive',
+								contains: search as string,
 							},
-							{
-								lastName: {
-									mode: 'insensitive',
-									contains: search as string,
-								},
+						},
+						{
+							lastName: {
+								mode: 'insensitive',
+								contains: search as string,
 							},
-							{
-								email: { contains: search as string, mode: 'insensitive' },
-							},
-						],
-				  }
+						},
+						{
+							email: { contains: search as string, mode: 'insensitive' },
+						},
+					],
+				}
 				: {};
 
 			// Conditions for sort
 			const sortCondition = sort
 				? {
-						orderBy: {
-							[sort as string]: type ?? 'asc',
-						},
-				  }
+					orderBy: {
+						[sort as string]: type ?? 'asc',
+					},
+				}
 				: {};
 
 			// Get all users
@@ -205,9 +208,12 @@ class UserServices {
 		firstName: string,
 		lastName: string
 	) {
+		console.log("🚀 ~ file: userServices.ts:208 ~ UserServices ~ email:", email)
+
 		try {
 			// Find user by Email
 			const user = await userRepository.getByEmail(email);
+			console.log("🚀 ~ file: userServices.ts:213 ~ UserServices ~ user:", user)
 
 			// Check if role exists
 			const roleExist = await roleRepository.getDetails(role);
@@ -242,7 +248,6 @@ class UserServices {
 					companyName: companyName?.companyName,
 					url: config?.reactAppBaseUrl,
 				});
-
 				// Send mail to generate new password
 				const mailOptions = {
 					from: config.smtpEmail,
@@ -287,7 +292,7 @@ class UserServices {
 				const adminMailOptions = {
 					from: config.smtpEmail,
 					to: invitedByEmail,
-					subject: 'Invitation to join CostAllocation Pro portal',
+					subject: 'Invitation to join Reusable App',
 					html: adminEmailContent,
 					// text: `Please use the following token to reset your password: ${forgotPasswordToken}`,
 				};
@@ -300,30 +305,37 @@ class UserServices {
 
 				return invitedUser;
 			} else {
+				console.log("sdsssssssssssssssssssssss");
 				// Checking the no of the user
-				const companyUsers = await userRepository.checkAddUserLimit(company);
-				if (companyUsers.totalNoOfUser.length >= 11) {
-					throw new CustomError(403, 'User limit is reached');
-				}
-				if (companyUsers.totalAdminUser.length >= 2 && roleExist.isAdminRole) {
-					throw new CustomError(403, 'Admin user limit is reached');
-				}
+				// const companyUsers = await userRepository.checkAddUserLimit(company);
+				// if (companyUsers.totalNoOfUser.length >= 11) {
+				// 	throw new CustomError(403, 'User limit is reached');
+				// }
+				// if (companyUsers.totalAdminUser.length >= 2 && roleExist.isAdminRole) {
+				// 	throw new CustomError(403, 'Admin user limit is reached');
+				// }
 
-				// Reset Password Token Generate
-				const resetPasswordToken = await generateForgotPasswordToken({
-					email: email,
-					role: role,
-				});
+				// // Reset Password Token Generate
+				// const resetPasswordToken = await generateForgotPasswordToken({
+				// 	email: email,
+				// 	role: role,
+				// });
+
+				const accessToken = await generateAccessToken({
+					email: email
+				})
+				console.log("🚀 ~ file: userServices.ts:324 ~ UserServices ~ accessToken:", accessToken)
 
 				// Expires in 1 hour
-				const resetPasswordTokenExpiresAt: string = (
-					Date.now() + config?.registerUrlExpireTime
-				).toString();
+				// const resetPasswordTokenExpiresAt: string = (
+				// 	Date.now() + config?.registerUrlExpireTime
+				// ).toString();
 
 				// Create new user with forgot password token and verified false
 				const createdUser = await userRepository.create({
 					email: email,
-					forgotPasswordToken: resetPasswordToken,
+					// forgotPasswordToken: resetPasswordToken,
+					// forgotPasswordTokenExpiresAt: resetPasswordTokenExpiresAt,
 					phone: phone,
 					firstName,
 					lastName,
@@ -370,8 +382,7 @@ class UserServices {
 				const companyName = await companyRepository.getDetails(company);
 
 				// Verify token url
-				const url = `${config?.reactAppBaseUrl}/reset-password?token=${resetPasswordToken}&first=true`;
-
+				const url = `${config?.reactAppBaseUrl}/reset-password?token=${accessToken}&first=true&setPassword=true`;
 				const emailContent = getInvitationEmailUserTemplate({
 					email,
 					companyName: companyName?.companyName,
@@ -384,7 +395,7 @@ class UserServices {
 					to: email,
 					subject: 'Invitation to join CostAllocation Pro company',
 					html: emailContent,
-					// text: `Please use the following token to reset your password: ${forgotPasswordToken}`,
+					text: `Please use the following token to reset your password: ${accessToken}`,
 				};
 
 				// Mail send to admin
@@ -402,7 +413,7 @@ class UserServices {
 					to: invitedByEmail,
 					subject: 'Invitation to join CostAllocation Pro portal',
 					html: adminEmailContent,
-					// text: `Please use the following token to reset your password: ${forgotPasswordToken}`,
+					text: `Please use the following token to reset your password: ${accessToken}`,
 				};
 
 				await sendEmail(mailOptions);
@@ -439,6 +450,7 @@ class UserServices {
 				companyId,
 				userId
 			);
+			console.log("🚀 ~ file: userServices.ts:444 ~ UserServices ~ deleteUser ~ userExist:", userExist)
 
 			if (!userExist) {
 				const error = new CustomError(
@@ -448,12 +460,22 @@ class UserServices {
 				throw error;
 			}
 
+
+
 			// Delete User From Company Role
 			const deleteUser = await companyRoleRepository.deleteUserFromCompany(
 				userId,
 				companyId
 			);
+			console.log("🚀 ~ file: userServices.ts:458 ~ UserServices ~ deleteUser ~ deleteUser:", deleteUser)
 
+			const roleExist = await companyRoleRepository.roleInCompany(
+				userExist.roleId
+			);
+			console.log("🚀 ~ file: userServices.ts:466 ~ UserServices ~ deleteUser ~ roleExist:", roleExist)
+			if (!roleExist) {
+				await roleRepository.combineRoleCompany(companyId, userExist.roleId);
+			}
 			return deleteUser;
 		} catch (err) {
 			throw err;

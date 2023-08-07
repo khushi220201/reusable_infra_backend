@@ -205,12 +205,12 @@ export const getInvitationEmailUserTemplate = (data: any) => {
  				 <div style="width:100%; min-height:60vh;display:block; background-color:#f8f1e9; padding : 200px 0px; font-family:'Lexend', sans-serif;">
 						<div class="my-card" style="background-color:#fff; border:2px solid #e0e0eb; padding:30px; max-width:470px; border-radius:15px; margin:auto">
 							<div class="card-header">
-								<img src="https://costallocationspro.s3.amazonaws.com/image/cap-logo.png" width="200"/>
+								<img src="https://static.wikia.nocookie.net/warner-bros-entertainment/images/3/30/Animal_Planet_logo_2018.png/revision/latest?cb=20220702212150" width="200"/>
 							</div>
 							<div class="card-body">
 									<p style="font-weight:600; font-size:20px">Invitation to join the company.</p>
 									<p>Hi <b>${email}</b>,</p>
-									<p>You have been invited to join <b>${companyName}</b> on CostAllocation Pro.</p>  
+									<p>You have been invited to join <b>${companyName}</b> on Reusable App.</p>  
 									<p>Please generate password for your account to access our portal using below link :</p>  
 										<br/>
 									<p style="margin:30px 0px"><button class="reset-button" style="border:none;border-radius:20px;padding:8px 20px;background-color:#000;"><a href='${url}' style="color:white;text-decoration:none;">Generate Password<a/></button></p>

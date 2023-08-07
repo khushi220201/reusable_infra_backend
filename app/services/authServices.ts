@@ -2,13 +2,14 @@ import config from '../../config';
 import sendEmail from '../helpers/emailHelper';
 import {
 	getForgotPasswordTemplate,
-	getRegisterEmailTemplate,
+	// getRegisterEmailTemplate,
 } from '../helpers/emailTemplateHelper';
 import { comparePassword, hashPassword } from '../helpers/passwordHelper';
 import {
 	generateAccessToken,
 	generateForgotPasswordToken,
 	generateRefreshToken,
+	verifyAccessToken,
 	verifyForgotPasswordToken,
 } from '../helpers/tokenHelper';
 import { CustomError } from '../models/customError';
@@ -299,6 +300,73 @@ class AuthServices {
 				isVerified: true,
 				forgotPasswordToken: null,
 				forgotPasswordTokenExpiresAt: null,
+			});
+
+			return updatedUser;
+		} catch (err) {
+			throw err;
+		}
+	}
+
+	async setPassword(token: string, password: string) {
+		try {
+			// If token not exists, send error message
+			if (!token) {
+				const err = new CustomError(401, 'Token missing');
+				throw err;
+			}
+
+			const verified: any = await verifyAccessToken(token);
+			console.log("🚀 ~ file: authServices.ts:320 ~ AuthServices ~ setPassword ~ verified:", verified)
+
+			// If token not valid, send error message
+			if (!verified) {
+				const err = new CustomError(401, 'Invalid token');
+				throw err;
+			}
+
+			// Find user by email from verified token
+			const user = await userRepository.getByEmail(verified?.email as string);
+
+			// If user not exists, send error message
+			if (!user) {
+				const err = new CustomError(401, 'Invalid token');
+				throw err;
+			}
+
+			// If forgotPasswordToken not exists in db, send error message
+			// if (user.forgotPasswordToken !== token) {
+			// 	const err = new CustomError(401, 'Reset token has expired');
+			// 	throw err;
+			// }
+
+			// // If token is expired, send error message
+			// if (Number(user.forgotPasswordTokenExpiresAt) < Date.now()) {
+			// 	const err = new CustomError(401, 'Reset token has expired');
+			// 	throw err;
+			// }
+
+			// Check if the new password is the same as the old one
+			// if (user?.password) {
+			// 	const encrypted = await comparePassword(password, user?.password);
+			// 	if (encrypted) {
+			// 		const error = new CustomError(
+			// 			422,
+			// 			'New password cannot be same as old password'
+			// 		);
+			// 		throw error;
+			// 	}
+			// }
+
+			// Encrypt password
+			const hashedPassword = await hashPassword(password);
+
+			// Save password and remove forgot password tokens
+			const updatedUser = await userRepository.update(user?.id, {
+				password: hashedPassword,
+				isVerified: true,
+				// forgotPasswordToken: null,
+				// forgotPasswordTokenExpiresAt: null,
 			});
 
 			return updatedUser;

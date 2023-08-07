@@ -3,8 +3,7 @@ dotenv.config({ path: '.env' });
 
 // Env file configuration
 function config(Env: any) {
-	console.log('Env?.SMTP_EMAIL: ', Env?.SMTP_EMAIL);
-	console.log('Env?.SMTP_PASSWORD: ', Env?.SMTP_PASSWORD);
+	
 	return {
 		port: Env?.PORT,
 		reactAppBaseUrl: Env?.REACT_APP_BASE_URL,

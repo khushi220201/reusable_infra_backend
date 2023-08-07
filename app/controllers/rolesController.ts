@@ -55,6 +55,7 @@ class RolesController {
 				type as string,
 				sort as string
 			);
+			console.log("🚀 ~ file: rolesController.ts:58 ~ RolesController ~ getAllRoles= ~ roles:", roles)
 
 			return DefaultResponse(res, 200, 'Roles find successful', roles);
 		} catch (error) {

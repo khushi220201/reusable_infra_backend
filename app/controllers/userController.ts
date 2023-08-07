@@ -122,7 +122,9 @@ class UserController {
 		try {
 			checkValidation(req);
 			const { user, company } = req.body;
-			console.log("🚀 ~ file: userController.ts:126 ~ UserController ~ deleteUser ~ req.body:", req.body)
+			console.log("🚀 ~ file: userController.ts:125 ~ UserController ~ deleteUser ~ company:", company)
+			console.log("🚀 ~ file: userController.ts:125 ~ UserController ~ deleteUser ~ user:", user)
+			// console.log("🚀 ~ file: userController.ts:126 ~ UserController ~ deleteUser ~ req.body:", req.body)
 			// Checking is the user is permitted
 			const isPermitted = await checkPermission(req, company, {
 				permissionName: 'Users',

@@ -441,6 +441,7 @@ class UserServices {
 				companyId,
 				userId
 			);
+			console.log("🚀 ~ file: userServices.ts:444 ~ UserServices ~ deleteUser ~ userExist:", userExist)
 
 			if (!userExist) {
 				const error = new CustomError(
@@ -450,12 +451,22 @@ class UserServices {
 				throw error;
 			}
 
+			
+
 			// Delete User From Company Role
 			const deleteUser = await companyRoleRepository.deleteUserFromCompany(
 				userId,
 				companyId
 			);
+			console.log("🚀 ~ file: userServices.ts:458 ~ UserServices ~ deleteUser ~ deleteUser:", deleteUser)
 
+			const roleExist = await companyRoleRepository.roleInCompany(
+				userExist.roleId
+			);
+			console.log("🚀 ~ file: userServices.ts:466 ~ UserServices ~ deleteUser ~ roleExist:", roleExist)
+			if(!roleExist){
+				await roleRepository.combineRoleCompany(companyId,userExist.roleId);
+			}
 			return deleteUser;
 		} catch (err) {
 			throw err;

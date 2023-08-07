@@ -32,7 +32,7 @@ class AuthController {
 			const companyAdminRole = await roleRepository.createRole(
 				'Company Admin',
 				'All company permissions granted',
-				false,
+				true,
 				true
 			);
 

@@ -112,8 +112,24 @@ class CompanyRoleRepository {
 		}
 	}
 
+	//Check role Exits in Comapny
+	async roleInCompany(roleId: string) {
+		try {
+			const roleExist = await prisma.companyRole.findFirst({
+				where: {
+					roleId:roleId
+					},
+			});
+			return roleExist;
+		} catch (err) {
+			throw err;
+		}
+	}
+
 	// Delete user from company
 	async deleteUserFromCompany(user: string, company: string) {
+		console.log("🚀 ~ file: companyRoleRepository.ts:117 ~ CompanyRoleRepository ~ deleteUserFromCompany ~ company:", company)
+		console.log("🚀 ~ file: companyRoleRepository.ts:117 ~ CompanyRoleRepository ~ deleteUserFromCompany ~ user:", user)
 		try {
 			const deletedUser = await prisma.companyRole.deleteMany({
 				where: {

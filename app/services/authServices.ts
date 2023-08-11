@@ -26,7 +26,7 @@ class AuthServices {
 				const error = new CustomError(401, 'Invalid credentials');
 				throw error;
 			}
-
+   
 			// Check if user is verified
 			if (!user?.isVerified) {
 				const error = new CustomError(401, 'User is not verified');

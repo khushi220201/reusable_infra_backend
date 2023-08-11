@@ -17,24 +17,19 @@ import sendEmail from '../helpers/emailHelper';
 import { verifyForgotPasswordToken } from '../helpers/tokenHelper';
 
 class AuthController {
-	//Test Register
-	async register(req: Request, res: Response, next: NextFunction) {
-		try {
-			const { confirmPassword, companyName, ...data } = req.body
-			const hashedPassword = await hashPassword(data.password);
-			data.password = hashedPassword
-			data.isVerified = true
-			const response = await userRepository.register(data)
-			const companyData = {
-				// tenantID: Math.random().toString(),
-				companyName: req.body.companyName,
-			};
-			const companyAdminRole = await roleRepository.createRole(
-				'Company Admin',
-				'All company permissions granted',
-				true,
-				true
-			);
+//Register Controller
+async register(req: Request, res: Response, next: NextFunction) {
+	try {
+		const {confirmPassword,companyName,...data} = req.body
+		const hashedPassword = await hashPassword(data.password);
+		data.password=hashedPassword
+		const response=await userRepository.register(data)
+		res.send(response)
+	} catch (err) {
+		console.log(err);
+		next(err);
+	}
+}
 
 			const companyReadOnlyRole = await roleRepository.createRole(
 				'Read Only',
@@ -75,18 +70,14 @@ class AuthController {
 	// async register(req: Request, res: Response, next: NextFunction) {
 	// 	try {
 	// 		const { data } = req.body;
-
 	// 		const customer = data?.subscription?.customer;
-
 	// 		const firstName = customer?.first_name;
 	// 		const lastName = customer?.last_name;
 	// 		const email = customer?.email;
 	// 		const customerId = customer?.customer_id;
 	// 		let companyAdminRole;
-
 	// 		// Check if company admin role exists
 	// 		companyAdminRole = await roleRepository.checkAdmin('Company Admin');
-
 	// 		if (!companyAdminRole) {
 	// 			companyAdminRole = await roleRepository.createRole(
 	// 				'Company Admin',

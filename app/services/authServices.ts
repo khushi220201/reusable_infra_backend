@@ -74,10 +74,10 @@ class AuthServices {
 	// 		);
 
 	// 		// Generate forgot password token
-	// 		const forgotPasswordToken = generateForgotPasswordToken({
-	// 			id: user?.id,
-	// 			email: email,
-	// 		});
+			// const forgotPasswordToken = generateForgotPasswordToken({
+			// 	id: user?.id,
+			// 	email: email,
+			// });
 
 	// 		// Expire time for token
 	// 		const forgotPasswordTokenExpiresAt: string = (
@@ -85,10 +85,10 @@ class AuthServices {
 	// 		).toString();
 
 	// 		// Store token in the database
-	// 		await userRepository.update(user?.id, {
-	// 			forgotPasswordToken: forgotPasswordToken,
-	// 			forgotPasswordTokenExpiresAt: forgotPasswordTokenExpiresAt,
-	// 		});
+			// await userRepository.update(user?.id, {
+			// 	forgotPasswordToken: forgotPasswordToken,
+			// 	forgotPasswordTokenExpiresAt: forgotPasswordTokenExpiresAt,
+			// });
 
 	// 		// Change Password url
 	// 		const url = `${config?.changePasswordReactUrl}?token=${forgotPasswordToken}&first=true`;
@@ -159,7 +159,7 @@ class AuthServices {
 			const mailOptions = {
 				from: config.smtpEmail,
 				to: email,
-				subject: 'Reset Password - CostAllocation Pro',
+				subject: 'Reset Password - Reusable Infra',
 				html: emailContent,
 				// text: `Please use the following token to reset your password: ${forgotPasswordToken}`,
 			};
@@ -300,6 +300,42 @@ class AuthServices {
 				isVerified: true,
 				forgotPasswordToken: null,
 				// forgotPasswordTokenExpiresAt: null,
+			});
+
+			return updatedUser;
+		} catch (err) {
+			throw err;
+		}
+	}
+
+	async verifyRegisteredUser(token: string, password: string , email:string) {
+		try {
+			// If token not exists, send error message
+			if (!token) {
+				const err = new CustomError(401, 'Token missing');
+				throw err;
+			}
+
+			const verified: any = await verifyForgotPasswordToken(token);
+
+			// If token not valid, send error message
+			if (!verified) {
+				const err = new CustomError(401, 'Invalid token');
+				throw err;
+			}
+
+			// Find user by email from verified token
+			const user = await userRepository.getByEmail(verified?.email as string);
+
+			// If user not exists, send error message
+			if (!user) {
+				const err = new CustomError(401, 'Invalid token');
+				throw err;
+			}
+
+			// Save password and remove forgot password tokens
+			const updatedUser = await userRepository.update(user?.id, {
+				isVerified: true,
 			});
 
 			return updatedUser;

@@ -30,6 +30,7 @@ function config(Env: any) {
 		refreshTokenExpireTime: 10 * 24 * 60 * 60, // in seconds
 		resetPasswordReactUrl: `${Env?.REACT_APP_BASE_URL}/reset-password`,
 		changePasswordReactUrl: `${Env?.REACT_APP_BASE_URL}/reset-password`,
+		verifyEmail: `${Env?.REACT_APP_BASE_URL}/login`,
 		s3accessKeyId: Env?.S3_ACCESSKEYID,
 		s3secretAccessKey: Env?.S3_SECRETACCESSKEY,
 		s3BaseUrl: Env?.S3_BASE_URL,

@@ -75,11 +75,12 @@ export const getRegisterEmailTemplate = (data: any) => {
 
 // Send email to user when he subscribe to zoho
 export const getRegisterEmailTemplateInfra = (data: any) => {
-  const { fullName } = data;
+  const { fullName, url } = data;
 
   return `
   <!DOCTYPE html>
   <html lang="en">
+  
   <head>
 	  <meta charset="UTF-8" />
 	  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -102,9 +103,22 @@ export const getRegisterEmailTemplateInfra = (data: any) => {
 				  <p>Hi <b> ${fullName}</b>,</p>
 				  <p>We hope this email finds you well. On behalf of the entire team at <b>Reusable Infra App</b>, we
 					  wanted to thank you for registering to our app.</p>
+				  <p style="margin: 30px 0; text-align: center;">
+					  <a href="${url}" style="text-decoration: none;">
+						  <button onclick="Myfunction()"
+							  style="border: none; border-radius: 6px; padding: 15px 30px; background-color: #286fd1;font-size: 1rem; color: white; cursor: pointer;">
+							  Verify Email
+						  </button>
+					  </a>
+				  </p>
 			  </div>
 		  </div>
 	  </div>
+	  <script>
+		  function Myfunction() {
+			  alert("this is pratik ")
+		  }
+	  </script>
   </body>
   </html>
   `;

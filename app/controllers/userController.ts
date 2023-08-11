@@ -60,6 +60,26 @@ class UserController {
 		try {
 			const id = req.params.id;
 			const user = await userServices.getUserById(id);
+			console.log("🚀 ~ file: userController.ts:64 ~ UserController ~ getUserDetails ~ user:", user)
+			return DefaultResponse(
+				res,
+				200,
+				'User details fetched successfully',
+				user
+			);
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	// get user details by email
+	async getUserDetailsByEmail(req: Request, res: Response, next: NextFunction) {
+		console.log("getUserDetailsByEmail");
+		try {
+			const email = req.query.email;
+			console.log("🚀 ~ file: userController.ts:80 ~ UserController ~ getUserDetailsByEmail ~ email:", email)
+			const user = await userRepository.getByEmail(email as string);
+			console.log("🚀 ~ file: userController.ts:78 ~ UserController ~ getUserDetailsByEmail ~ user:", user)
 			return DefaultResponse(
 				res,
 				200,
@@ -211,6 +231,7 @@ class UserController {
 
 	// Invite User
 	async inviteUser(req: RequestExtended, res: Response, next: NextFunction) {
+		console.log("inviteuser");
 		try {
 			checkValidation(req);
 			const {
@@ -222,14 +243,14 @@ class UserController {
 				lastName = '',
 			} = req.body;
 			// Checking is the user is permitted
-			const isPermitted = await checkPermission(req, company, {
-				permissionName: 'Users',
-				permission: ['add'],
-			});
+			// const isPermitted = await checkPermission(req, company, {
+			// 	permissionName: 'Users',
+			// 	permission: ['add'],
+			// });
 
-			if (!isPermitted) {
-				throw new CustomError(403, 'You are not authorized');
-			}
+			// if (!isPermitted) {
+			// 	throw new CustomError(403, 'You are not authorized');
+			// }
 
 			const user = await userServices.inviteUser(
 				req?.user?.id,

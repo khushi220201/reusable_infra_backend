@@ -14,9 +14,17 @@ class RoleService {
 		type?: string,
 		sort?: string
 	) => {
+		console.log("🚀 ~ file: roleService.ts:17 ~ RoleService ~ sort:", sort)
+		console.log("🚀 ~ file: roleService.ts:17 ~ RoleService ~ type:", type)
+		console.log("🚀 ~ file: roleService.ts:17 ~ RoleService ~ filter:", filter)
+		console.log("🚀 ~ file: roleService.ts:17 ~ RoleService ~ search:", search)
+		console.log("🚀 ~ file: roleService.ts:17 ~ RoleService ~ limit:", limit)
+		console.log("🚀 ~ file: roleService.ts:17 ~ RoleService ~ company:", company)
+		console.log("🚀 ~ file: roleService.ts:17 ~ RoleService ~ page:", page)
 		try {
 			// Offset set
 			let offset;
+			console.log("🚀 ~ file: roleService.ts:20 ~ RoleService ~ offset:", offset)
 			if (page === 1) {
 				offset = (Number(page) - 1) * Number(limit);
 				limit = limit - 1;
@@ -40,8 +48,17 @@ class RoleService {
 				limit,
 				filterConditions
 			);
+			console.log("🚀 ~ file: roleService.ts:36 ~ RoleService ~ sort:", sort)
+			console.log("🚀 ~ file: roleService.ts:38 ~ RoleService ~ search:", search)
+			console.log("🚀 ~ file: roleService.ts:40 ~ RoleService ~ page:", page)
+			console.log("🚀 ~ file: roleService.ts:42 ~ RoleService ~ company:", company)
+			console.log("🚀 ~ file: roleService.ts:44 ~ RoleService ~ offset:", offset)
+			console.log("🚀 ~ file: roleService.ts:45 ~ RoleService ~ limit:", limit)
+			console.log("🚀 ~ file: roleService.ts:46 ~ RoleService ~ filterConditions:", filterConditions)
+			console.log("🚀 ~ file: roleService.ts:43 ~ RoleService ~ roles:", roles)
 
 			const total = await roleRepository.count(search, company);
+			console.log("🚀 ~ file: roleService.ts:45 ~ RoleService ~ total:", total)
 
 			return { roles, total: total };
 		} catch (err) {
@@ -80,7 +97,7 @@ class RoleService {
 					isAdminRole,
 					isCompanyRole
 				);
-				 await roleRepository.combineRoleCompany(orgId, role.id);
+				await roleRepository.combineRoleCompany(orgId, role.id);
 				return role;
 			}
 		} catch (error) {

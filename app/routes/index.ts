@@ -10,7 +10,7 @@ import { Request, Response } from 'express';
 const router = express.Router();
 
 router.use('/auth', authRoutes);
-router.use('/users', isAuthenticated, userRoutes);
+router.use('/users', userRoutes);
 router.use('/companies', isAuthenticated, companyRoutes);
 router.use('/role', isAuthenticated, roleRoutes);
 router.use('/permission', permissionRoutes);

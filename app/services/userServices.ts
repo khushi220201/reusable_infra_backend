@@ -340,6 +340,7 @@ class UserServices {
 					firstName,
 					lastName,
 				});
+				console.log("🚀 ~ file: userServices.ts:343 ~ UserServices ~ createdUser:", createdUser)
 
 				// Check if role (first time created) already exists without user
 
@@ -383,6 +384,7 @@ class UserServices {
 
 				// Verify token url
 				const url = `${config?.reactAppBaseUrl}/reset-password?token=${accessToken}&first=true&setPassword=true`;
+				
 				const emailContent = getInvitationEmailUserTemplate({
 					email,
 					companyName: companyName?.companyName,
@@ -393,31 +395,33 @@ class UserServices {
 				const mailOptions = {
 					from: config.smtpEmail,
 					to: email,
-					subject: 'Invitation to join CostAllocation Pro company',
+					subject: 'Invitation to join Reusable App ',
 					html: emailContent,
 					text: `Please use the following token to reset your password: ${accessToken}`,
 				};
+				console.log("🚀 ~ file: userServices.ts:402 ~ UserServices ~ mailOptions:", mailOptions)
 
 				// Mail send to admin
 
-				const adminEmailContent = getInvitationAdminMailTemplate({
-					invitedByEmail,
-					email,
-					companyName: companyName?.companyName,
-					url: config?.reactAppBaseUrl,
-				});
+				// const adminEmailContent = getInvitationAdminMailTemplate({
+				// 	invitedByEmail,
+				// 	email,
+				// 	companyName: companyName?.companyName,
+				// 	url: config?.reactAppBaseUrl,
+				// });
 
 				// Send mail to Admin
-				const adminMailOptions = {
-					from: config.smtpEmail,
-					to: invitedByEmail,
-					subject: 'Invitation to join CostAllocation Pro portal',
-					html: adminEmailContent,
-					text: `Please use the following token to reset your password: ${accessToken}`,
-				};
+				// const adminMailOptions = {
+				// 	from: config.smtpEmail,
+				// 	to: invitedByEmail,
+				// 	subject: 'Invitation to join Reusable App ',
+				// 	html: adminEmailContent,
+				// 	text: `Please use the following token to reset your password: ${accessToken}`,
+				// };
+				// console.log("🚀 ~ file: userServices.ts:421 ~ UserServices ~ adminMailOptions:", adminMailOptions)
 
 				await sendEmail(mailOptions);
-				await sendEmail(adminMailOptions);
+				// await sendEmail(adminMailOptions);
 
 				return companyRole;
 			}

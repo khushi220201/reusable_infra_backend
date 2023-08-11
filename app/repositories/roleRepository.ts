@@ -189,6 +189,7 @@ class RoleRepositories {
 				orderBy: {
 					roleName: sortCondition as any,
 				},
+				
 			});
 
 			const rolesList = roles?.map((singleRole) => singleRole);

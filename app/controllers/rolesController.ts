@@ -45,6 +45,7 @@ class RolesController {
 		try {
 			const { id } = req.params;
 			const { page = 1, limit = 10, search, filter, type, sort } = req.query;
+			console.log("🚀 ~ file: rolesController.ts:48 ~ RolesController ~ getAllRoles= ~ req.query:", req.query)
 
 			const roles = await roleService.getAllRoles(
 				id as string,
@@ -55,7 +56,7 @@ class RolesController {
 				type as string,
 				sort as string
 			);
-			console.log("🚀 ~ file: rolesController.ts:58 ~ RolesController ~ getAllRoles= ~ roles:", roles)
+			// console.log("🚀 ~ file: rolesController.ts:58 ~ RolesController ~ getAllRoles= ~ roles:", roles)
 
 			return DefaultResponse(res, 200, 'Roles find successful', roles);
 		} catch (error) {

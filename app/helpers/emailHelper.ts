@@ -15,13 +15,18 @@ const transporter = nodemailer.createTransport({
 // Send Email
 const sendEmail = (options: nodemailer.SendMailOptions): Promise<any> => {
 	return new Promise((resolve, reject) => {
-		transporter.sendMail(options, (error, info) => {
-			if (error) {
-				console.error('Error sending email:', error);
-				reject(error);
-			}
-			resolve(info);
-		});
+		try {
+			transporter.sendMail(options, (error, info) => {
+				if (error) {
+					console.error('Error sending email:', error);
+					reject(error);
+				}
+				resolve(info);
+			});
+		} catch (error) {
+			console.log("🚀 ~ file: emailHelper.ts:27 ~ returnnewPromise ~ error:", error)
+			
+		}
 	});
 
 	// Send the email with the reset token

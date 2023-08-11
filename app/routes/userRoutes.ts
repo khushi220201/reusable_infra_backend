@@ -11,8 +11,13 @@ const router = express.Router();
 // Get All Users
 router.get('/', userController.getAllUsers);
 
-// Get User Details By Id
+// Get User Details By Email
+router.get('/get-email', userController.getUserDetailsByEmail);
+
+// Get User Details By Id   {Change the route of this id as if we use the same get method it will be called as it takes thing as argument Id.}
 router.get('/:id', userController.getUserDetails);
+
+
 
 // Create New User (Temporary Api)
 router.post('/', userController.createUser);

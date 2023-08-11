@@ -273,17 +273,45 @@ class RoleRepositories {
 	};
 
 	// Get total count
-	async count(search: any, company: string) {
+	async count(sort : any,
+		search : any,
+		page : any,
+		company : any,
+		offset : any,
+		limit : any ,
+		filterConditions : any) {
+		console.log("🚀 ~ file: roleRepository.ts:283 ~ RoleRepositories ~ page:", page)
+		console.log("🚀 ~ file: roleRepository.ts:283 ~ RoleRepositories ~ limit:", limit)
+		console.log("🚀 ~ file: roleRepository.ts:283 ~ RoleRepositories ~ offset:", offset)
+		console.log("🚀 ~ file: roleRepository.ts:287 ~ RoleRepositories ~ filterConditions:", filterConditions)
 		try {
 			const total = await prisma.role.count({
+				// where: {
+				// 	isCompanyAdmin: false,
+				// 	isAdminRole: false,
+				// 	users: {
+				// 		some: {
+				// 			companyId: company,
+				// 		},
+				// 	},
+				// 	OR: [
+				// 		{
+				// 			roleName: {
+				// 				mode: 'insensitive',
+				// 				contains: search,
+				// 			},
+				// 		},
+				// 		{
+				// 			roleDescription: {
+				// 				mode: 'insensitive',
+				// 				contains: search,
+				// 			},
+				// 		},
+				// 	],
+				// },
 				where: {
 					isCompanyAdmin: false,
 					isAdminRole: false,
-					users: {
-						some: {
-							companyId: company,
-						},
-					},
 					OR: [
 						{
 							roleName: {
@@ -298,7 +326,18 @@ class RoleRepositories {
 							},
 						},
 					],
+					...filterConditions,
+					users: {
+						some: {
+							companyId: company,
+						},
+					},
 				},
+				// skip: offset,
+				// take: limit,
+				// orderBy: {
+				// 	roleName: sortCondition as any,
+				// },
 			});
 			// Removing company admin role count
 			return total + 1;

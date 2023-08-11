@@ -57,7 +57,13 @@ class RoleService {
 			console.log("🚀 ~ file: roleService.ts:46 ~ RoleService ~ filterConditions:", filterConditions)
 			console.log("🚀 ~ file: roleService.ts:43 ~ RoleService ~ roles:", roles)
 
-			const total = await roleRepository.count(search, company);
+			const total = await roleRepository.count(sort,
+				search!,
+				page,
+				company,
+				offset,
+				limit,
+				filterConditions);
 			console.log("🚀 ~ file: roleService.ts:45 ~ RoleService ~ total:", total)
 
 			return { roles, total: total };

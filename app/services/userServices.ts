@@ -252,7 +252,7 @@ class UserServices {
 				const mailOptions = {
 					from: config.smtpEmail,
 					to: email,
-					subject: 'Invitation to join CostAllocation Pro portal',
+					subject: 'Invitation to join Reusable app',
 					html: emailContent,
 					// text: `Please use the following token to reset your password: ${forgotPasswordToken}`,
 				};

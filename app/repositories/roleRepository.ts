@@ -1,5 +1,5 @@
 import { prisma } from '../client/prisma';
-import { DefaultPermissions, DefaultAdminPermissions } from '../constants/data';
+import { DefaultPermissions, DefaultAdminPermissions, DefaultReadOnlyPermissions, DefaultAccountantPermissions } from '../constants/data';
 
 type SortCondition = {
 	orderBy: {
@@ -105,7 +105,9 @@ class RoleRepositories {
 							data:
 								isCompanyAdmin || isAdminRole
 									? DefaultAdminPermissions
-									: DefaultPermissions,
+									: roleName==="Read Only"?DefaultReadOnlyPermissions:
+									roleName==="Accountant"?DefaultAccountantPermissions: 
+									DefaultPermissions,
 						},
 					},
 				},
@@ -191,12 +193,12 @@ class RoleRepositories {
 
 			const rolesList = roles?.map((singleRole) => singleRole);
 			if (page === 1) {
-				if (searchRegex.test('admin') || search === '') {
+				if (searchRegex.test('Company Admin') || search === '') {
 					const adminRole: any = await prisma.role.findFirst({
 						where: {
 							roleName: {
 								mode: 'insensitive',
-								equals: 'admin',
+								equals: 'Company Admin',
 							},
 
 							isAdminRole: true,

@@ -8,7 +8,6 @@ import { CustomError } from '../models/customError';
 class RolesController {
 	//For create a single role
 	createRole = async (req: Request, res: Response, next: NextFunction) => {
-		console.log("object11111")
 		try {
 			checkValidation(req);
 			const {
@@ -17,7 +16,7 @@ class RolesController {
 				roleName,
 				isAdminRole = false,
 			} = req.body;
-			console.log("🚀 ~ file: rolesController.ts:20 ~ RolesController ~ createRole= ~ req.body:", req.body)
+			// console.log("🚀 ~ file: rolesController.ts:20 ~ RolesController ~ createRole= ~ req.body:", req.body)
 			// const isPermitted = await checkPermission(req, orgId, {
 			// 	permissionName: 'Roles',
 			// 	permission: ['add'],
@@ -56,6 +55,7 @@ class RolesController {
 				type as string,
 				sort as string
 			);
+			console.log("🚀 ~ file: rolesController.ts:58 ~ RolesController ~ getAllRoles= ~ roles:", roles)
 
 			return DefaultResponse(res, 200, 'Roles find successful', roles);
 		} catch (error) {

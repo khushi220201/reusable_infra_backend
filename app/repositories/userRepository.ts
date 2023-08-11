@@ -288,41 +288,40 @@ class UserRepository {
   // 	}
   // }
 
-  // Get all admin emails
-  async getAllAdminEmails(companyId: string) {
-    try {
-      const adminEmails = await prisma.companyRole.findMany({
-        where: {
-          companyId: companyId,
-          OR: [
-            {
-              role: {
-                isAdminRole: true,
-              },
-            },
-            {
-              role: {
-                isCompanyAdmin: true,
-              },
-            },
-          ],
-        },
-        select: {
-          user: {
-            select: {
-              email: true,
-              firstName: true,
-              lastName: true,
-            },
-          },
-        },
-      });
-
-      return adminEmails;
-    } catch (err) {
-      throw err;
-    }
-  }
+	// Get all admin emails
+	async getAllAdminEmails(companyId: string) {
+		try {
+			const adminEmails = await prisma.companyRole.findMany({
+				where: {
+					companyId: companyId,
+					OR: [
+						{
+							role: {
+								isAdminRole: true,
+							},
+						},
+						{
+							role: {
+								isCompanyAdmin: true,
+							},
+						},
+					],
+				},
+				select: {
+					user: {
+						select: {
+							email: true,
+							firstName: true,
+							lastName: true,
+						},
+					},
+				},
+			});
+			return adminEmails;
+		} catch (err) {
+			throw err;
+		}
+	}
 }
 
 export default new UserRepository();

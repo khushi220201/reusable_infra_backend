@@ -148,7 +148,6 @@ export const isAuthenticated = async (
 		// 	refreshToken
 		// );
 
-		// console.log('Is valid: ', isValid);
 
 		// if (!isValid) {
 		// 	const error = new CustomError(401, 'Token expired');

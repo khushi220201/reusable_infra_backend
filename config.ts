@@ -3,6 +3,7 @@ dotenv.config({ path: '.env' });
 
 // Env file configuration
 function config(Env: any) {
+	
 	return {
 		port: Env?.PORT,
 		reactAppBaseUrl: Env?.REACT_APP_BASE_URL,
@@ -19,6 +20,8 @@ function config(Env: any) {
 		smtpEmail: Env?.SMTP_EMAIL,
 		smtpEmailLogin: Env?.SMTP_EMAIL_LOGIN,
 		smtpPassword: Env?.SMTP_PASSWORD,
+	
+		
 		smtpHost: Env?.SMTP_HOST,
 		smtpPort: Env?.SMTP_PORT,
 		forgotPasswordUrlExpireTime: 30 * 60 * 1000, // in milliseconds - 30 minutes
@@ -27,6 +30,7 @@ function config(Env: any) {
 		refreshTokenExpireTime: 10 * 24 * 60 * 60, // in seconds
 		resetPasswordReactUrl: `${Env?.REACT_APP_BASE_URL}/reset-password`,
 		changePasswordReactUrl: `${Env?.REACT_APP_BASE_URL}/reset-password`,
+		verifyEmail: `${Env?.REACT_APP_BASE_URL}/login`,
 		s3accessKeyId: Env?.S3_ACCESSKEYID,
 		s3secretAccessKey: Env?.S3_SECRETACCESSKEY,
 		s3BaseUrl: Env?.S3_BASE_URL,

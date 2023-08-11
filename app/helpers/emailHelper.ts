@@ -3,6 +3,7 @@ import config from '../../config';
 
 // Nodemailer transporter configuration
 const transporter = nodemailer.createTransport({
+
 	host: config.smtpHost,
 	port: Number(config.smtpPort),
 	secure: false,
@@ -11,7 +12,6 @@ const transporter = nodemailer.createTransport({
 		pass: config.smtpPassword,
 	},
 });
-
 // Send Email
 const sendEmail = (options: nodemailer.SendMailOptions): Promise<any> => {
 	return new Promise((resolve, reject) => {

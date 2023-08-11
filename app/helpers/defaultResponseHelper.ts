@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import { DefaultResponseInterface } from '../interfaces/global';
+import { Url } from 'url';
 
 // Default Response For Every Api
 export const DefaultResponse = (
@@ -7,15 +8,15 @@ export const DefaultResponse = (
 	statusCode: number,
 	message: string,
 	data?: any,
-	total?: number,
-	page?: number
+	total?: number, 
+	page?: number,
+
 ) => {
 	let response: DefaultResponseInterface = {
 		message: message,
 		statusCode: statusCode,
 		data: data,
 	};
-
 	if (total) {
 		response = { ...response, total };
 	}

@@ -305,7 +305,6 @@ class UserServices {
 
 				return invitedUser;
 			} else {
-				console.log("sdsssssssssssssssssssssss");
 				// Checking the no of the user
 				// const companyUsers = await userRepository.checkAddUserLimit(company);
 				// if (companyUsers.totalNoOfUser.length >= 11) {

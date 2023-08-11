@@ -15,6 +15,8 @@ const router = express.Router();
 // Login
 router.post('/login', loginValidationRules, authController.login);
 
+router.post('/verifyemail/:token',authController.verifyRegisteredEmail);
+
 // Logout
 router.post('/logout', authController.logout);
 

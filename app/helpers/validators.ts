@@ -3,6 +3,7 @@ const { body } = require('express-validator');
 
 // Login validation rules
 export const loginValidationRules = [
+	
 	// Validate email
 	body('email').isEmail().withMessage('Invalid email address'),
 
@@ -15,6 +16,9 @@ export const forgotPasswordValidationRules = [
 	// Validate email
 	body('email').isEmail().withMessage('Invalid email address'),
 ];
+
+
+
 
 // Change Password validation rules
 export const changePasswordValidationRules = [
